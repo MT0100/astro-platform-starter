@@ -286,6 +286,14 @@ Any page or data can be rebuilt only when needed, without site visitors ever get
         .delay-300 { animation-delay: 0.3s; }
         .delay-400 { animation-delay: 0.4s; }
         .delay-500 { animation-delay: 0.5s; }
+        
+        .page-content {
+            display: block;
+        }
+        
+        .page-content.hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -305,12 +313,12 @@ Any page or data can be rebuilt only when needed, without site visitors ever get
             <div class="speed-value" id="speedValue">0</div>
             <div class="speed-unit">km/h</div>
         </div>
-        <h2 class="orbitron text-2xl neon-blue-glow">INITIALIZING SYSTEMS</h2>
+        <h2 class="orbitron text-2xl neon-blue-glow" data-text="loadingText">INITIALIZING SYSTEMS</h2>
     </div>
     
-    <!-- Navigation -->
+    <!-- Top Navigation - Logo Only -->
     <nav class="fixed top-0 left-0 w-full z-50 glassmorphism bg-opacity-80 px-6 py-4">
-        <div class="container mx-auto flex justify-between items-center">
+        <div class="container mx-auto flex justify-center items-center">
             <div class="flex items-center">
                 <!-- ASIMOV Logo -->
                 <svg class="w-10 h-10 mr-3" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -322,39 +330,65 @@ Any page or data can be rebuilt only when needed, without site visitors ever get
                     <span class="neon-blue-glow">ASIMOV</span>
                 </h1>
             </div>
-            <div class="hidden md:flex space-x-8">
-                <a href="#" class="nav-link text-white hover:text-cyan-400 transition-colors">Home</a>
-                <a href="#models" class="nav-link text-white hover:text-cyan-400 transition-colors">Models</a>
-                <a href="#tech" class="nav-link text-white hover:text-cyan-400 transition-colors">Technology</a>
-                <a href="#" class="nav-link text-white hover:text-cyan-400 transition-colors">About</a>
-                <a href="#" class="nav-link text-white hover:text-cyan-400 transition-colors">Contact</a>
-            </div>
-            <div class="md:hidden">
-                <button class="text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </div>
+    </nav>
+    
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 w-full z-50 glassmorphism bg-opacity-90 px-4 py-3">
+        <div class="container mx-auto">
+            <div class="flex justify-around items-center">
+                <a href="#" class="nav-link text-white hover:text-cyan-400 transition-colors text-center flex flex-col items-center py-2" onclick="showPage('isaac')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
+                    <span class="text-xs orbitron" data-nav="isaac">ISAAC</span>
+                </a>
+                <a href="#" class="nav-link text-white hover:text-cyan-400 transition-colors text-center flex flex-col items-center py-2" onclick="showPage('about')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span class="text-xs orbitron" data-nav="about">HAKKIMIZDA</span>
+                </a>
+                <a href="#" class="nav-link text-white hover:text-cyan-400 transition-colors text-center flex flex-col items-center py-2" onclick="showPage('contact')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <span class="text-xs orbitron" data-nav="contact">İLETİŞİM</span>
+                </a>
+                <a href="#" class="nav-link text-white hover:text-cyan-400 transition-colors text-center flex flex-col items-center py-2" onclick="showPage('ec')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    <span class="text-xs orbitron" data-nav="ec">EC</span>
+                </a>
+                <button onclick="toggleLanguage()" class="nav-link text-white hover:text-cyan-400 transition-colors text-center flex flex-col items-center py-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                    </svg>
+                    <span class="text-xs orbitron" data-text="langBtn">TR</span>
                 </button>
             </div>
         </div>
     </nav>
     
+    <!-- Page Containers -->
+    <div id="isaac-page" class="page-content">
     <!-- Hero Section -->
-    <section class="min-h-screen pt-24 pb-12 px-6 flex flex-col justify-center items-center relative">
+    <section class="min-h-screen pt-24 pb-20 px-6 flex flex-col justify-center items-center relative">
         <div class="container mx-auto text-center">
             <h1 class="orbitron text-4xl md:text-6xl font-bold mb-6 fade-in">
                 <span class="text-white">THE FUTURE OF </span>
-                <span class="red-glow text-red-500">AUTONOMOUS</span>
-                <span class="text-white"> DRIVING</span>
+                <span class="red-glow text-red-500" data-text="heroTitle1">AUTONOMOUS</span>
+                <span class="text-white" data-text="heroTitle2"> DRIVING</span>
             </h1>
-            <p class="text-xl md:text-2xl mb-12 max-w-3xl mx-auto text-gray-300 fade-in delay-100">
+            <p class="text-xl md:text-2xl mb-12 max-w-3xl mx-auto text-gray-300 fade-in delay-100" data-text="heroSubtitle">
                 Experience the revolution in self-driving technology with ASIMOV's cutting-edge AI systems and unparalleled safety features.
             </p>
             <div class="flex flex-wrap justify-center gap-6 fade-in delay-200">
-                <button class="bg-red-600 text-white px-8 py-3 rounded-full orbitron button-glow">
+                <button class="bg-red-600 text-white px-8 py-3 rounded-full orbitron button-glow" data-text="reserveNow">
                     RESERVE NOW
                 </button>
-                <button class="border border-cyan-400 text-cyan-400 px-8 py-3 rounded-full orbitron hover:bg-cyan-400/10 transition-colors">
+                <button class="border border-cyan-400 text-cyan-400 px-8 py-3 rounded-full orbitron hover:bg-cyan-400/10 transition-colors" data-text="learnMore">
                     LEARN MORE
                 </button>
             </div>
@@ -506,17 +540,17 @@ Any page or data can be rebuilt only when needed, without site visitors ever get
         
         <!-- Technical Details Button -->
         <div class="mt-16 text-center fade-in delay-500">
-            <button id="techDetailsBtn" class="bg-red-600 text-white px-10 py-4 rounded-full orbitron text-xl button-glow">
+            <button id="techDetailsBtn" class="bg-red-600 text-white px-10 py-4 rounded-full orbitron text-xl button-glow" data-text="techDetailsBtn">
                 TECHNICAL DETAILS
             </button>
         </div>
     </section>
     
     <!-- Technical Details Section -->
-    <section id="tech" class="min-h-screen py-20 px-6">
+    <section id="tech" class="min-h-screen py-20 pb-24 px-6">
         <div class="container mx-auto">
             <h2 class="orbitron text-4xl font-bold mb-16 text-center">
-                <span class="red-glow">TECHNICAL</span> <span class="neon-blue-glow">SPECIFICATIONS</span>
+                <span class="red-glow" data-text="techTitle1">TECHNICAL</span> <span class="neon-blue-glow" data-text="techTitle2">SPECIFICATIONS</span>
             </h2>
             
             <div class="flex flex-col lg:flex-row gap-12">
@@ -611,28 +645,28 @@ Any page or data can be rebuilt only when needed, without site visitors ever get
                     <div class="glassmorphism p-8">
                         <ul class="space-y-6">
                             <li class="tech-spec p-4 glassmorphism" id="spec1">
-                                <h3 class="orbitron text-xl font-bold mb-2">AI Neural Network</h3>
-                                <p>Advanced 12-core quantum neural processor with 1.2 trillion parameters for real-time decision making and obstacle avoidance.</p>
+                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec1Title">AI Neural Network</h3>
+                                <p data-text="spec1Desc">Advanced 12-core quantum neural processor with 1.2 trillion parameters for real-time decision making and obstacle avoidance.</p>
                             </li>
                             <li class="tech-spec p-4 glassmorphism" id="spec2">
-                                <h3 class="orbitron text-xl font-bold mb-2">Battery Range</h3>
-                                <p>Next-gen solid-state battery with 800km range on a single charge. Fast charging capability: 10-80% in just 15 minutes.</p>
+                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec2Title">Battery Range</h3>
+                                <p data-text="spec2Desc">Next-gen solid-state battery with 800km range on a single charge. Fast charging capability: 10-80% in just 15 minutes.</p>
                             </li>
                             <li class="tech-spec p-4 glassmorphism" id="spec3">
-                                <h3 class="orbitron text-xl font-bold mb-2">Sensor Array</h3>
-                                <p>360° LiDAR system with 16 high-definition cameras and ultrasonic sensors providing complete environmental awareness up to 300 meters.</p>
+                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec3Title">Sensor Array</h3>
+                                <p data-text="spec3Desc">360° LiDAR system with 16 high-definition cameras and ultrasonic sensors providing complete environmental awareness up to 300 meters.</p>
                             </li>
                             <li class="tech-spec p-4 glassmorphism" id="spec4">
-                                <h3 class="orbitron text-xl font-bold mb-2">Performance</h3>
-                                <p>Quad motor configuration delivering 1,200 horsepower. 0-100 km/h in 2.3 seconds with intelligent torque vectoring for optimal handling.</p>
+                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec4Title">Performance</h3>
+                                <p data-text="spec4Desc">Quad motor configuration delivering 1,200 horsepower. 0-100 km/h in 2.3 seconds with intelligent torque vectoring for optimal handling.</p>
                             </li>
                             <li class="tech-spec p-4 glassmorphism" id="spec5">
-                                <h3 class="orbitron text-xl font-bold mb-2">Safety Systems</h3>
-                                <p>Predictive collision avoidance with 99.98% accuracy. Reinforced carbon-fiber frame with 12 airbags and emergency autonomous evasion protocols.</p>
+                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec5Title">Safety Systems</h3>
+                                <p data-text="spec5Desc">Predictive collision avoidance with 99.98% accuracy. Reinforced carbon-fiber frame with 12 airbags and emergency autonomous evasion protocols.</p>
                             </li>
                             <li class="tech-spec p-4 glassmorphism" id="spec6">
-                                <h3 class="orbitron text-xl font-bold mb-2">Connectivity</h3>
-                                <p>Integrated 6G network capabilities with satellite uplink for continuous over-the-air updates and real-time traffic optimization.</p>
+                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec6Title">Connectivity</h3>
+                                <p data-text="spec6Desc">Integrated 6G network capabilities with satellite uplink for continuous over-the-air updates and real-time traffic optimization.</p>
                             </li>
                         </ul>
                     </div>
@@ -642,7 +676,7 @@ Any page or data can be rebuilt only when needed, without site visitors ever get
     </section>
     
     <!-- Footer -->
-    <footer class="py-12 px-6 border-t border-cyan-900">
+    <footer class="py-12 pb-20 px-6 border-t border-cyan-900">
         <div class="container mx-auto">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="flex items-center mb-8 md:mb-0">
@@ -674,17 +708,219 @@ Any page or data can be rebuilt only when needed, without site visitors ever get
                 </div>
             </div>
             <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between">
-                <p class="text-gray-500 text-sm mb-4 md:mb-0">© 2023 ASIMOV Autonomous Vehicles. All rights reserved.</p>
+                <p class="text-gray-500 text-sm mb-4 md:mb-0" data-text="footerCopyright">© 2023 ASIMOV Autonomous Vehicles. All rights reserved.</p>
                 <div class="flex space-x-6">
-                    <a href="#" class="text-gray-500 text-sm hover:text-cyan-400 transition-colors">Privacy Policy</a>
-                    <a href="#" class="text-gray-500 text-sm hover:text-cyan-400 transition-colors">Terms of Service</a>
-                    <a href="#" class="text-gray-500 text-sm hover:text-cyan-400 transition-colors">Contact</a>
+                    <a href="#" class="text-gray-500 text-sm hover:text-cyan-400 transition-colors" data-text="privacyPolicy">Privacy Policy</a>
+                    <a href="#" class="text-gray-500 text-sm hover:text-cyan-400 transition-colors" data-text="termsOfService">Terms of Service</a>
+                    <a href="#" class="text-gray-500 text-sm hover:text-cyan-400 transition-colors" data-text="contactFooter">Contact</a>
                 </div>
             </div>
         </div>
     </footer>
+    </div>
+    
+    <!-- About Page -->
+    <div id="about-page" class="page-content hidden">
+        <section class="min-h-screen pt-24 pb-20 px-6 flex flex-col justify-center items-center">
+            <div class="container mx-auto text-center">
+                <h1 class="orbitron text-4xl md:text-6xl font-bold mb-6">
+                    <span class="neon-blue-glow" data-text="aboutTitle">HAKKIMIZDA</span>
+                </h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto" data-text="aboutContent">
+                    Bu sayfa henüz hazırlanmaktadır...
+                </p>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Contact Page -->
+    <div id="contact-page" class="page-content hidden">
+        <section class="min-h-screen pt-24 pb-20 px-6 flex flex-col justify-center items-center">
+            <div class="container mx-auto text-center">
+                <h1 class="orbitron text-4xl md:text-6xl font-bold mb-6">
+                    <span class="neon-blue-glow" data-text="contactTitle">İLETİŞİM</span>
+                </h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto" data-text="contactContent">
+                    Bu sayfa henüz hazırlanmaktadır...
+                </p>
+            </div>
+        </section>
+    </div>
+    
+    <!-- EC Page -->
+    <div id="ec-page" class="page-content hidden">
+        <section class="min-h-screen pt-24 pb-20 px-6 flex flex-col justify-center items-center">
+            <div class="container mx-auto text-center">
+                <h1 class="orbitron text-4xl md:text-6xl font-bold mb-6">
+                    <span class="neon-blue-glow" data-text="ecTitle">EC</span>
+                </h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto" data-text="ecContent">
+                    Bu sayfa henüz hazırlanmaktadır...
+                </p>
+            </div>
+        </section>
+    </div>
 
     <script>
+        // Language system
+        let currentLanguage = 'tr';
+        
+        const translations = {
+            tr: {
+                // Navigation
+                isaac: 'ISAAC',
+                about: 'HAKKIMIZDA',
+                contact: 'İLETİŞİM',
+                ec: 'EC',
+                
+                // Hero section
+                heroTitle1: 'OTONOM',
+                heroTitle2: 'SÜRÜŞÜN GELECEĞİ',
+                heroSubtitle: 'ASIMOV\'un son teknoloji yapay zeka sistemleri ve benzersiz güvenlik özellikleri ile otonom sürüş devrimini deneyimleyin.',
+                reserveNow: 'ŞİMDİ REZERVE ET',
+                learnMore: 'DAHA FAZLA BİLGİ',
+                
+                // Technical section
+                techTitle1: 'TEKNİK',
+                techTitle2: 'ÖZELLİKLER',
+                techDetailsBtn: 'TEKNİK DETAYLAR',
+                
+                // Specifications
+                spec1Title: 'Yapay Zeka Sinir Ağı',
+                spec1Desc: 'Gerçek zamanlı karar verme ve engel kaçınma için 1.2 trilyon parametreli gelişmiş 12 çekirdekli kuantum sinir işlemcisi.',
+                spec2Title: 'Batarya Menzili',
+                spec2Desc: 'Tek şarjla 800km menzil sunan yeni nesil katı hal bataryası. Hızlı şarj özelliği: Sadece 15 dakikada %10-80.',
+                spec3Title: 'Sensör Dizisi',
+                spec3Desc: '300 metreye kadar tam çevresel farkındalık sağlayan 16 yüksek çözünürlüklü kamera ve ultrasonik sensörlerle 360° LiDAR sistemi.',
+                spec4Title: 'Performans',
+                spec4Desc: '1.200 beygir gücü sunan dörtlü motor konfigürasyonu. Optimal yol tutuş için akıllı tork vektörleme ile 0-100 km/s 2.3 saniyede.',
+                spec5Title: 'Güvenlik Sistemleri',
+                spec5Desc: '%99.98 doğrulukla öngörülü çarpışma kaçınma. 12 hava yastığı ve acil durum otonom kaçınma protokolleri ile güçlendirilmiş karbon fiber çerçeve.',
+                spec6Title: 'Bağlantı',
+                spec6Desc: 'Sürekli kablosuz güncellemeler ve gerçek zamanlı trafik optimizasyonu için uydu bağlantısı ile entegre 6G ağ yetenekleri.',
+                
+                // Pages
+                aboutTitle: 'HAKKIMIZDA',
+                aboutContent: 'Bu sayfa henüz hazırlanmaktadır...',
+                contactTitle: 'İLETİŞİM',
+                contactContent: 'Bu sayfa henüz hazırlanmaktadır...',
+                ecTitle: 'EC',
+                ecContent: 'Bu sayfa henüz hazırlanmaktadır...',
+                
+                // Loading
+                loadingText: 'SİSTEMLER BAŞLATILIYOR',
+                
+                // Footer
+                footerCopyright: '© 2023 ASIMOV Otonom Araçlar. Tüm hakları saklıdır.',
+                privacyPolicy: 'Gizlilik Politikası',
+                termsOfService: 'Hizmet Şartları',
+                contactFooter: 'İletişim'
+            },
+            en: {
+                // Navigation
+                isaac: 'ISAAC',
+                about: 'ABOUT',
+                contact: 'CONTACT',
+                ec: 'EC',
+                
+                // Hero section
+                heroTitle1: 'AUTONOMOUS',
+                heroTitle2: 'DRIVING',
+                heroSubtitle: 'Experience the revolution in self-driving technology with ASIMOV\'s cutting-edge AI systems and unparalleled safety features.',
+                reserveNow: 'RESERVE NOW',
+                learnMore: 'LEARN MORE',
+                
+                // Technical section
+                techTitle1: 'TECHNICAL',
+                techTitle2: 'SPECIFICATIONS',
+                techDetailsBtn: 'TECHNICAL DETAILS',
+                
+                // Specifications
+                spec1Title: 'AI Neural Network',
+                spec1Desc: 'Advanced 12-core quantum neural processor with 1.2 trillion parameters for real-time decision making and obstacle avoidance.',
+                spec2Title: 'Battery Range',
+                spec2Desc: 'Next-gen solid-state battery with 800km range on a single charge. Fast charging capability: 10-80% in just 15 minutes.',
+                spec3Title: 'Sensor Array',
+                spec3Desc: '360° LiDAR system with 16 high-definition cameras and ultrasonic sensors providing complete environmental awareness up to 300 meters.',
+                spec4Title: 'Performance',
+                spec4Desc: 'Quad motor configuration delivering 1,200 horsepower. 0-100 km/h in 2.3 seconds with intelligent torque vectoring for optimal handling.',
+                spec5Title: 'Safety Systems',
+                spec5Desc: 'Predictive collision avoidance with 99.98% accuracy. Reinforced carbon-fiber frame with 12 airbags and emergency autonomous evasion protocols.',
+                spec6Title: 'Connectivity',
+                spec6Desc: 'Integrated 6G network capabilities with satellite uplink for continuous over-the-air updates and real-time traffic optimization.',
+                
+                // Pages
+                aboutTitle: 'ABOUT US',
+                aboutContent: 'This page is under construction...',
+                contactTitle: 'CONTACT',
+                contactContent: 'This page is under construction...',
+                ecTitle: 'EC',
+                ecContent: 'This page is under construction...',
+                
+                // Loading
+                loadingText: 'INITIALIZING SYSTEMS',
+                
+                // Footer
+                footerCopyright: '© 2023 ASIMOV Autonomous Vehicles. All rights reserved.',
+                privacyPolicy: 'Privacy Policy',
+                termsOfService: 'Terms of Service',
+                contactFooter: 'Contact'
+            }
+        };
+        
+        function updateLanguage() {
+            const t = translations[currentLanguage];
+            
+            // Update navigation
+            document.querySelector('[data-nav="isaac"]').textContent = t.isaac;
+            document.querySelector('[data-nav="about"]').textContent = t.about;
+            document.querySelector('[data-nav="contact"]').textContent = t.contact;
+            document.querySelector('[data-nav="ec"]').textContent = t.ec;
+            
+            // Update hero section
+            document.querySelector('[data-text="heroTitle1"]').textContent = t.heroTitle1;
+            document.querySelector('[data-text="heroTitle2"]').textContent = t.heroTitle2;
+            document.querySelector('[data-text="heroSubtitle"]').textContent = t.heroSubtitle;
+            document.querySelector('[data-text="reserveNow"]').textContent = t.reserveNow;
+            document.querySelector('[data-text="learnMore"]').textContent = t.learnMore;
+            
+            // Update technical section
+            document.querySelector('[data-text="techTitle1"]').textContent = t.techTitle1;
+            document.querySelector('[data-text="techTitle2"]').textContent = t.techTitle2;
+            document.querySelector('[data-text="techDetailsBtn"]').textContent = t.techDetailsBtn;
+            
+            // Update specifications
+            for (let i = 1; i <= 6; i++) {
+                document.querySelector(`[data-text="spec${i}Title"]`).textContent = t[`spec${i}Title`];
+                document.querySelector(`[data-text="spec${i}Desc"]`).textContent = t[`spec${i}Desc`];
+            }
+            
+            // Update pages
+            document.querySelector('[data-text="aboutTitle"]').textContent = t.aboutTitle;
+            document.querySelector('[data-text="aboutContent"]').textContent = t.aboutContent;
+            document.querySelector('[data-text="contactTitle"]').textContent = t.contactTitle;
+            document.querySelector('[data-text="contactContent"]').textContent = t.contactContent;
+            document.querySelector('[data-text="ecTitle"]').textContent = t.ecTitle;
+            document.querySelector('[data-text="ecContent"]').textContent = t.ecContent;
+            
+            // Update loading text
+            document.querySelector('[data-text="loadingText"]').textContent = t.loadingText;
+            
+            // Update footer
+            document.querySelector('[data-text="footerCopyright"]').textContent = t.footerCopyright;
+            document.querySelector('[data-text="privacyPolicy"]').textContent = t.privacyPolicy;
+            document.querySelector('[data-text="termsOfService"]').textContent = t.termsOfService;
+            document.querySelector('[data-text="contactFooter"]').textContent = t.contactFooter;
+            
+            // Update language button
+            document.querySelector('[data-text="langBtn"]').textContent = currentLanguage.toUpperCase();
+        }
+        
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'tr' ? 'en' : 'tr';
+            updateLanguage();
+        }
+
         // Loading screen with speedometer animation
         document.addEventListener('DOMContentLoaded', function() {
             const loadingScreen = document.getElementById('loadingScreen');
@@ -735,7 +971,25 @@ Any page or data can be rebuilt only when needed, without site visitors ever get
             document.getElementById('techDetailsBtn').addEventListener('click', function() {
                 document.getElementById('tech').scrollIntoView({ behavior: 'smooth' });
             });
+            
+            // Initialize language system
+            updateLanguage();
         });
+        
+        // Page navigation function
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(page => {
+                page.classList.add('hidden');
+            });
+            
+            // Show selected page
+            const targetPage = document.getElementById(pageId + '-page');
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+            }
+        }
         
         // Create a single particle
         function createParticle() {
@@ -836,5 +1090,5 @@ Any page or data can be rebuilt only when needed, without site visitors ever get
             }, 10000);
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'978d853d77f389de',t:'MTc1NjgyMTQ4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97cda32a36364bb2',t:'MTc1NzQ5MzgwMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
