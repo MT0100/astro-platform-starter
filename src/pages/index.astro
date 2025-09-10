@@ -13,1082 +13,728 @@ Any page or data can be rebuilt only when needed, without site visitors ever get
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASIMOV - Future of Self-Driving</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="ASIMOV - Future of Self-Driving" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        :root {
-            --dark-bg: #0b0f1a;
-            --neon-blue: #00ffff;
-            --red-highlight: #ff1b1b;
-            --white: #ffffff;
-        }
-        
-        body {
-            font-family: 'Exo 2', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--white);
-            overflow-x: hidden;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .orbitron {
-            font-family: 'Orbitron', sans-serif;
-        }
-        
-        .glassmorphism {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-        
-        .neon-blue-glow {
-            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 30px var(--neon-blue);
-        }
-        
-        .red-glow {
-            text-shadow: 0 0 10px var(--red-highlight), 0 0 20px var(--red-highlight);
-        }
-        
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--dark-bg);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 1s ease-out;
-        }
-        
-        .speedometer {
-            width: 300px;
-            height: 300px;
-            position: relative;
-            margin-bottom: 30px;
-        }
-        
-        .speedometer-circle {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 4px solid rgba(0, 255, 255, 0.3);
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .speedometer-needle {
-            position: absolute;
-            width: 4px;
-            height: 130px;
-            background: linear-gradient(to top, var(--neon-blue), transparent);
-            bottom: 50%;
-            left: calc(50% - 2px);
-            transform-origin: bottom center;
-            transform: rotate(-90deg);
-            transition: transform 0.1s ease-out;
-            z-index: 2;
-        }
-        
-        .speedometer-center {
-            width: 30px;
-            height: 30px;
-            background-color: var(--neon-blue);
-            border-radius: 50%;
-            box-shadow: 0 0 20px var(--neon-blue);
-            z-index: 3;
-        }
-        
-        .speed-value {
-            position: absolute;
-            bottom: 80px;
-            font-size: 48px;
-            font-weight: bold;
-            color: var(--neon-blue);
-            text-shadow: 0 0 10px var(--neon-blue);
-        }
-        
-        .speed-unit {
-            position: absolute;
-            bottom: 60px;
-            font-size: 18px;
-            color: var(--neon-blue);
-        }
-        
-        .car-model-container {
-            position: relative;
-            width: 100%;
-            height: 400px;
-            margin: 50px 0;
-            perspective: 1000px;
-        }
-        
-        .car-model {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.5s ease;
-        }
-        
-        .car-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            backface-visibility: hidden;
-        }
-        
-        .gallery {
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-            height: 250px;
-            margin: 30px 0;
-        }
-        
-        .gallery-track {
-            display: flex;
-            transition: transform 0.5s ease-out;
-        }
-        
-        .gallery-item {
-            min-width: 300px;
-            height: 200px;
-            margin: 0 15px;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .tech-spec {
-            opacity: 0.3;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            transform: translateY(10px);
-        }
-        
-        .tech-spec.active {
-            opacity: 1;
-            transform: translateY(0);
-            color: var(--red-highlight);
-            text-shadow: 0 0 10px rgba(255, 27, 27, 0.5);
-        }
-        
-        .button-glow {
-            box-shadow: 0 0 15px var(--red-highlight);
-            transition: box-shadow 0.3s ease, transform 0.3s ease;
-        }
-        
-        .button-glow:hover {
-            box-shadow: 0 0 25px var(--red-highlight), 0 0 40px rgba(255, 27, 27, 0.4);
-            transform: translateY(-2px);
-        }
-        
-        .nav-link {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--neon-blue);
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        .rotate-controls {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .rotate-btn {
-            background: rgba(0, 255, 255, 0.1);
-            border: 1px solid var(--neon-blue);
-            color: var(--neon-blue);
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .rotate-btn:hover {
-            background: rgba(0, 255, 255, 0.2);
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-        }
-        
-        /* Grid lines background */
-        .grid-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
-            background-size: 40px 40px;
-            z-index: -1;
-        }
-        
-        /* Particles */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-        
-        .particle {
-            position: absolute;
-            background-color: var(--neon-blue);
-            border-radius: 50%;
-            opacity: 0.3;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .fade-in {
-            animation: fadeIn 1s forwards;
-            opacity: 0;
-        }
-        
-        .delay-100 { animation-delay: 0.1s; }
-        .delay-200 { animation-delay: 0.2s; }
-        .delay-300 { animation-delay: 0.3s; }
-        .delay-400 { animation-delay: 0.4s; }
-        .delay-500 { animation-delay: 0.5s; }
-        
-        .page-content {
-            display: block;
-        }
-        
-        .page-content.hidden {
-            display: none;
-        }
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+    
+    <style is:global>
+      :root {
+        --dark-bg: #0b0f1a;
+        --neon-blue: #00ffff;
+        --red-highlight: #ff1b1b;
+        --white: #ffffff;
+      }
+      
+      body {
+        font-family: 'Exo 2', sans-serif;
+        background-color: var(--dark-bg);
+        color: var(--white);
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+      }
+      
+      .orbitron {
+        font-family: 'Orbitron', sans-serif;
+      }
+      
+      .glassmorphism {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+      }
+      
+      .neon-blue-glow {
+        text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 30px var(--neon-blue);
+      }
+      
+      .red-glow {
+        text-shadow: 0 0 10px var(--red-highlight), 0 0 20px var(--red-highlight);
+      }
+      
+      .loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--dark-bg);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 1s ease-out;
+      }
+      
+      .speedometer {
+        width: 300px;
+        height: 300px;
+        position: relative;
+        margin-bottom: 30px;
+      }
+      
+      .speedometer-circle {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 4px solid rgba(0, 255, 255, 0.3);
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .speedometer-needle {
+        position: absolute;
+        width: 4px;
+        height: 130px;
+        background: linear-gradient(to top, var(--neon-blue), transparent);
+        bottom: 50%;
+        left: calc(50% - 2px);
+        transform-origin: bottom center;
+        transform: rotate(-90deg);
+        transition: transform 0.1s ease-out;
+        z-index: 2;
+      }
+      
+      .speedometer-center {
+        width: 30px;
+        height: 30px;
+        background-color: var(--neon-blue);
+        border-radius: 50%;
+        box-shadow: 0 0 20px var(--neon-blue);
+        z-index: 3;
+      }
+      
+      .speed-value {
+        position: absolute;
+        bottom: 80px;
+        font-size: 48px;
+        font-weight: bold;
+        color: var(--neon-blue);
+        text-shadow: 0 0 10px var(--neon-blue);
+      }
+      
+      .speed-unit {
+        position: absolute;
+        bottom: 60px;
+        font-size: 18px;
+        color: var(--neon-blue);
+      }
+      
+      .car-model-container {
+        position: relative;
+        width: 100%;
+        height: 400px;
+        margin: 50px 0;
+        perspective: 1000px;
+      }
+      
+      .car-model {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.5s ease;
+      }
+      
+      .car-face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        backface-visibility: hidden;
+      }
+      
+      .gallery {
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        height: 250px;
+        margin: 30px 0;
+      }
+      
+      .gallery-track {
+        display: flex;
+        transition: transform 0.5s ease-out;
+      }
+      
+      .gallery-item {
+        min-width: 300px;
+        height: 200px;
+        margin: 0 15px;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      
+      .tech-spec {
+        opacity: 0.3;
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        transform: translateY(10px);
+      }
+      
+      .tech-spec.active {
+        opacity: 1;
+        transform: translateY(0);
+        color: var(--red-highlight);
+        text-shadow: 0 0 10px rgba(255, 27, 27, 0.5);
+      }
+      
+      .button-glow {
+        box-shadow: 0 0 15px var(--red-highlight);
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+      }
+      
+      .button-glow:hover {
+        box-shadow: 0 0 25px var(--red-highlight), 0 0 40px rgba(255, 27, 27, 0.4);
+        transform: translateY(-2px);
+      }
+      
+      .nav-link {
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--neon-blue);
+        transition: width 0.3s ease;
+      }
+      
+      .nav-link:hover::after {
+        width: 100%;
+      }
+      
+      .rotate-controls {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+      }
+      
+      .rotate-btn {
+        background: rgba(0, 255, 255, 0.1);
+        border: 1px solid var(--neon-blue);
+        color: var(--neon-blue);
+        padding: 8px 16px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .rotate-btn:hover {
+        background: rgba(0, 255, 255, 0.2);
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+      }
+      
+      .grid-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+          linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 40px 40px;
+        z-index: -1;
+      }
+      
+      .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+      }
+      
+      .particle {
+        position: absolute;
+        background-color: var(--neon-blue);
+        border-radius: 50%;
+        opacity: 0.3;
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      .fade-in {
+        animation: fadeIn 1s forwards;
+        opacity: 0;
+      }
+      
+      .delay-100 { animation-delay: 0.1s; }
+      .delay-200 { animation-delay: 0.2s; }
+      .delay-300 { animation-delay: 0.3s; }
+      .delay-400 { animation-delay: 0.4s; }
+      .delay-500 { animation-delay: 0.5s; }
+      
+      .page-content {
+        display: block;
+      }
+      
+      .page-content.hidden {
+        display: none;
+      }
     </style>
-</head>
-<body>
-    <!-- Grid Background -->
-    <div class="grid-bg"></div>
-    
-    <!-- Particles -->
-    <div class="particles" id="particles"></div>
-    
-    <!-- Loading Screen with Speedometer -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="speedometer">
-            <div class="speedometer-circle">
-                <div class="speedometer-needle" id="speedNeedle"></div>
-                <div class="speedometer-center"></div>
-            </div>
-            <div class="speed-value" id="speedValue">0</div>
-            <div class="speed-unit">km/h</div>
-        </div>
-        <h2 class="orbitron text-2xl neon-blue-glow" data-text="loadingText">INITIALIZING SYSTEMS</h2>
+  </body>
+</html>
+
+src/components/LoadingScreen.astro
+
+<div class="loading-screen" id="loadingScreen">
+  <div class="speedometer">
+    <div class="speedometer-circle">
+      <div class="speedometer-needle" id="speedNeedle"></div>
+      <div class="speedometer-center"></div>
     </div>
-    
-    <!-- Top Navigation - Logo Only -->
-    <nav class="fixed top-0 left-0 w-full z-50 glassmorphism bg-opacity-80 px-6 py-4">
-        <div class="container mx-auto flex justify-center items-center">
-            <div class="flex items-center">
-                <!-- ASIMOV Logo -->
-                <svg class="w-10 h-10 mr-3" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="50" cy="50" r="45" stroke="#00ffff" stroke-width="2"/>
-                    <path d="M30 30L70 70M30 70L70 30" stroke="#00ffff" stroke-width="2"/>
-                    <circle cx="50" cy="50" r="20" stroke="#ff1b1b" stroke-width="2"/>
-                </svg>
-                <h1 class="orbitron text-2xl font-bold text-white">
-                    <span class="neon-blue-glow">ASIMOV</span>
-                </h1>
-            </div>
-        </div>
-    </nav>
-    
-    <!-- Bottom Navigation -->
-    <nav class="fixed bottom-0 left-0 w-full z-50 glassmorphism bg-opacity-90 px-4 py-3">
-        <div class="container mx-auto">
-            <div class="flex justify-around items-center">
-                <a href="#" class="nav-link text-white hover:text-cyan-400 transition-colors text-center flex flex-col items-center py-2" onclick="showPage('isaac')">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                    </svg>
-                    <span class="text-xs orbitron" data-nav="isaac">ISAAC</span>
-                </a>
-                <a href="#" class="nav-link text-white hover:text-cyan-400 transition-colors text-center flex flex-col items-center py-2" onclick="showPage('about')">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span class="text-xs orbitron" data-nav="about">HAKKIMIZDA</span>
-                </a>
-                <a href="#" class="nav-link text-white hover:text-cyan-400 transition-colors text-center flex flex-col items-center py-2" onclick="showPage('contact')">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                    <span class="text-xs orbitron" data-nav="contact">İLETİŞİM</span>
-                </a>
-                <a href="#" class="nav-link text-white hover:text-cyan-400 transition-colors text-center flex flex-col items-center py-2" onclick="showPage('ec')">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                    </svg>
-                    <span class="text-xs orbitron" data-nav="ec">EC</span>
-                </a>
-                <button onclick="toggleLanguage()" class="nav-link text-white hover:text-cyan-400 transition-colors text-center flex flex-col items-center py-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
-                    </svg>
-                    <span class="text-xs orbitron" data-text="langBtn">TR</span>
-                </button>
-            </div>
-        </div>
-    </nav>
-    
-    <!-- Page Containers -->
-    <div id="isaac-page" class="page-content">
+    <div class="speed-value" id="speedValue">0</div>
+    <div class="speed-unit">km/h</div>
+  </div>
+  <h2 class="orbitron text-2xl neon-blue-glow" data-text="loadingText">INITIALIZING SYSTEMS</h2>
+</div>
+
+src/components/Navigation.astro
+
+<!-- Top Navigation - Logo Only -->
+<nav class="fixed top-0 left-0 w-full z-50 glassmorphism bg-opacity-80 px-6 py-4">
+  <div class="container mx-auto flex justify-center items-center">
+    <div class="flex items-center">
+      <!-- ASIMOV Logo -->
+      <svg class="w-10 h-10 mr-3" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="45" stroke="#00ffff" stroke-width="2"/>
+        <path d="M30 30L70 70M30 70L70 30" stroke="#00ffff" stroke-width="2"/>
+        <circle cx="50" cy="50" r="20" stroke="#ff1b1b" stroke-width="2"/>
+      </svg>
+      <h1 class="orbitron text-2xl font-bold text-white">
+        <span class="neon-blue-glow">ASIMOV</span>
+      </h1>
+    </div>
+  </div>
+</nav>
+
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 w-full z-50 glassmorphism bg-opacity-90 px-4 py-3">
+  <div class="container mx-auto">
+    <div class="flex justify-around items-center">
+      <a href="#" class="nav-link text-white hover:text-cyan-400 transition-colors text-center flex flex-col items-center py-2" onclick="showPage('isaac')">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        </svg>
+        <span class="text-xs orbitron" data-nav="isaac">ISAAC</span>
+      </a>
+      <a href="#" class="nav-link text-white hover:text-cyan-400 transition-colors text-center flex flex-col items-center py-2" onclick="showPage('about')">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span class="text-xs orbitron" data-nav="about">HAKKIMIZDA</span>
+      </a>
+      <a href="#" class="nav-link text-white hover:text-cyan-400 transition-colors text-center flex flex-col items-center py-2" onclick="showPage('contact')">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+        <span class="text-xs orbitron" data-nav="contact">İLETİŞİM</span>
+      </a>
+      <a href="#" class="nav-link text-white hover:text-cyan-400 transition-colors text-center flex flex-col items-center py-2" onclick="showPage('ec')">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
+        <span class="text-xs orbitron" data-nav="ec">EC</span>
+      </a>
+      <button onclick="toggleLanguage()" class="nav-link text-white hover:text-cyan-400 transition-colors text-center flex flex-col items-center py-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+        </svg>
+        <span class="text-xs orbitron" data-text="langBtn">TR</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+src/components/CarModel.astro
+
+---
+export interface Props {
+  modelId: string;
+  leftBtnId: string;
+  rightBtnId: string;
+}
+
+const { modelId, leftBtnId, rightBtnId } = Astro.props;
+---
+
+<div class="car-model-container">
+  <div class="car-model" id={modelId}>
+    <div class="car-face" style="transform: rotateY(0deg)">
+      <svg class="w-full max-w-lg" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Front view of futuristic car -->
+        <path d="M150 300 L650 300 L600 200 L200 200 Z" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
+        <path d="M200 200 L600 200 L550 150 L250 150 Z" fill="#16213e" stroke="#00ffff" stroke-width="2"/>
+        <rect x="250" y="170" width="300" height="20" fill="#00ffff" opacity="0.3"/>
+        <circle cx="250" cy="250" r="40" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
+        <circle cx="250" cy="250" r="30" fill="#1a1a2e" stroke="#ff1b1b" stroke-width="1"/>
+        <circle cx="250" cy="250" r="15" fill="#ff1b1b" opacity="0.7"/>
+        <circle cx="550" cy="250" r="40" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
+        <circle cx="550" cy="250" r="30" fill="#1a1a2e" stroke="#ff1b1b" stroke-width="1"/>
+        <circle cx="550" cy="250" r="15" fill="#ff1b1b" opacity="0.7"/>
+        <path d="M300 170 L500 170 L480 155 L320 155 Z" fill="#00ffff" opacity="0.5"/>
+      </svg>
+    </div>
+    <div class="car-face" style="transform: rotateY(90deg)">
+      <svg class="w-full max-w-lg" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Side view of futuristic car -->
+        <path d="M100 300 L700 300 L650 250 L200 250 L150 280 Z" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
+        <path d="M200 250 L650 250 L600 180 L250 180 Z" fill="#16213e" stroke="#00ffff" stroke-width="2"/>
+        <path d="M250 180 L600 180 L580 150 L270 150 Z" fill="#0f0f0f" stroke="#00ffff" stroke-width="2"/>
+        <rect x="300" y="200" width="250" height="30" fill="#00ffff" opacity="0.2"/>
+        <circle cx="220" cy="300" r="30" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
+        <circle cx="220" cy="300" r="15" fill="#ff1b1b" opacity="0.7"/>
+        <circle cx="580" cy="300" r="30" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
+        <circle cx="580" cy="300" r="15" fill="#ff1b1b" opacity="0.7"/>
+      </svg>
+    </div>
+    <div class="car-face" style="transform: rotateY(180deg)">
+      <svg class="w-full max-w-lg" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Rear view of futuristic car -->
+        <path d="M150 300 L650 300 L600 200 L200 200 Z" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
+        <path d="M200 200 L600 200 L550 150 L250 150 Z" fill="#16213e" stroke="#00ffff" stroke-width="2"/>
+        <rect x="200" y="220" width="400" height="10" fill="#ff1b1b" opacity="0.7"/>
+        <circle cx="250" cy="250" r="40" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
+        <circle cx="250" cy="250" r="30" fill="#1a1a2e" stroke="#ff1b1b" stroke-width="1"/>
+        <circle cx="250" cy="250" r="15" fill="#ff1b1b" opacity="0.7"/>
+        <circle cx="550" cy="250" r="40" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
+        <circle cx="550" cy="250" r="30" fill="#1a1a2e" stroke="#ff1b1b" stroke-width="1"/>
+        <circle cx="550" cy="250" r="15" fill="#ff1b1b" opacity="0.7"/>
+      </svg>
+    </div>
+    <div class="car-face" style="transform: rotateY(270deg)">
+      <svg class="w-full max-w-lg" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Other side view of futuristic car -->
+        <path d="M100 300 L700 300 L650 250 L200 250 L150 280 Z" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
+        <path d="M200 250 L650 250 L600 180 L250 180 Z" fill="#16213e" stroke="#00ffff" stroke-width="2"/>
+        <path d="M250 180 L600 180 L580 150 L270 150 Z" fill="#0f0f0f" stroke="#00ffff" stroke-width="2"/>
+        <rect x="300" y="200" width="250" height="30" fill="#00ffff" opacity="0.2"/>
+        <circle cx="220" cy="300" r="30" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
+        <circle cx="220" cy="300" r="15" fill="#ff1b1b" opacity="0.7"/>
+        <circle cx="580" cy="300" r="30" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
+        <circle cx="580" cy="300" r="15" fill="#ff1b1b" opacity="0.7"/>
+      </svg>
+    </div>
+  </div>
+</div>
+<div class="rotate-controls">
+  <button class="rotate-btn" id={leftBtnId}>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L9.414 11H13a1 1 0 100-2H9.414l1.293-1.293z" clip-rule="evenodd" />
+    </svg>
+    ROTATE LEFT
+  </button>
+  <button class="rotate-btn" id={rightBtnId}>
+    ROTATE RIGHT
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.293 7.707a1 1 0 011.414-1.414l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L10.586 11H7a1 1 0 110-2h3.586l-1.293-1.293z" clip-rule="evenodd" />
+    </svg>
+  </button>
+</div>
+
+src/pages/index.astro
+
+---
+import Layout from '../layouts/Layout.astro';
+import LoadingScreen from '../components/LoadingScreen.astro';
+import Navigation from '../components/Navigation.astro';
+import CarModel from '../components/CarModel.astro';
+---
+
+<Layout title="ASIMOV - Future of Self-Driving">
+  <!-- Grid Background -->
+  <div class="grid-bg"></div>
+  
+  <!-- Particles -->
+  <div class="particles" id="particles"></div>
+  
+  <!-- Loading Screen -->
+  <LoadingScreen />
+  
+  <!-- Navigation -->
+  <Navigation />
+  
+  <!-- Page Containers -->
+  <div id="isaac-page" class="page-content">
     <!-- Hero Section -->
     <section class="min-h-screen pt-24 pb-20 px-6 flex flex-col justify-center items-center relative">
-        <div class="container mx-auto text-center">
-            <h1 class="orbitron text-4xl md:text-6xl font-bold mb-6 fade-in">
-                <span class="text-white">THE FUTURE OF </span>
-                <span class="red-glow text-red-500" data-text="heroTitle1">AUTONOMOUS</span>
-                <span class="text-white" data-text="heroTitle2"> DRIVING</span>
-            </h1>
-            <p class="text-xl md:text-2xl mb-12 max-w-3xl mx-auto text-gray-300 fade-in delay-100" data-text="heroSubtitle">
-                Experience the revolution in self-driving technology with ASIMOV's cutting-edge AI systems and unparalleled safety features.
-            </p>
-            <div class="flex flex-wrap justify-center gap-6 fade-in delay-200">
-                <button class="bg-red-600 text-white px-8 py-3 rounded-full orbitron button-glow" data-text="reserveNow">
-                    RESERVE NOW
-                </button>
-                <button class="border border-cyan-400 text-cyan-400 px-8 py-3 rounded-full orbitron hover:bg-cyan-400/10 transition-colors" data-text="learnMore">
-                    LEARN MORE
-                </button>
-            </div>
+      <div class="container mx-auto text-center">
+        <h1 class="orbitron text-4xl md:text-6xl font-bold mb-6 fade-in">
+          <span class="text-white">THE FUTURE OF </span>
+          <span class="red-glow text-red-500" data-text="heroTitle1">AUTONOMOUS</span>
+          <span class="text-white" data-text="heroTitle2"> DRIVING</span>
+        </h1>
+        <p class="text-xl md:text-2xl mb-12 max-w-3xl mx-auto text-gray-300 fade-in delay-100" data-text="heroSubtitle">
+          Experience the revolution in self-driving technology with ASIMOV's cutting-edge AI systems and unparalleled safety features.
+        </p>
+        <div class="flex flex-wrap justify-center gap-6 fade-in delay-200">
+          <button class="bg-red-600 text-white px-8 py-3 rounded-full orbitron button-glow" data-text="reserveNow">
+            RESERVE NOW
+          </button>
+          <button class="border border-cyan-400 text-cyan-400 px-8 py-3 rounded-full orbitron hover:bg-cyan-400/10 transition-colors" data-text="learnMore">
+            LEARN MORE
+          </button>
         </div>
-        
-        <!-- 3D Car Model -->
-        <div id="models" class="w-full max-w-5xl mx-auto mt-20 fade-in delay-300">
-            <h2 class="orbitron text-3xl font-bold mb-8 text-center">
-                <span class="neon-blue-glow">ASIMOV</span> <span class="red-glow">NEXUS</span>
-            </h2>
-            <div class="car-model-container">
-                <div class="car-model" id="carModel">
-                    <div class="car-face" style="transform: rotateY(0deg)">
-                        <svg class="w-full max-w-lg" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Front view of futuristic car -->
-                            <path d="M150 300 L650 300 L600 200 L200 200 Z" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
-                            <path d="M200 200 L600 200 L550 150 L250 150 Z" fill="#16213e" stroke="#00ffff" stroke-width="2"/>
-                            <rect x="250" y="170" width="300" height="20" fill="#00ffff" opacity="0.3"/>
-                            <circle cx="250" cy="250" r="40" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="250" cy="250" r="30" fill="#1a1a2e" stroke="#ff1b1b" stroke-width="1"/>
-                            <circle cx="250" cy="250" r="15" fill="#ff1b1b" opacity="0.7"/>
-                            <circle cx="550" cy="250" r="40" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="550" cy="250" r="30" fill="#1a1a2e" stroke="#ff1b1b" stroke-width="1"/>
-                            <circle cx="550" cy="250" r="15" fill="#ff1b1b" opacity="0.7"/>
-                            <path d="M300 170 L500 170 L480 155 L320 155 Z" fill="#00ffff" opacity="0.5"/>
-                        </svg>
-                    </div>
-                    <div class="car-face" style="transform: rotateY(90deg)">
-                        <svg class="w-full max-w-lg" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Side view of futuristic car -->
-                            <path d="M100 300 L700 300 L650 250 L200 250 L150 280 Z" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
-                            <path d="M200 250 L650 250 L600 180 L250 180 Z" fill="#16213e" stroke="#00ffff" stroke-width="2"/>
-                            <path d="M250 180 L600 180 L580 150 L270 150 Z" fill="#0f0f0f" stroke="#00ffff" stroke-width="2"/>
-                            <rect x="300" y="200" width="250" height="30" fill="#00ffff" opacity="0.2"/>
-                            <circle cx="220" cy="300" r="30" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="220" cy="300" r="15" fill="#ff1b1b" opacity="0.7"/>
-                            <circle cx="580" cy="300" r="30" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="580" cy="300" r="15" fill="#ff1b1b" opacity="0.7"/>
-                        </svg>
-                    </div>
-                    <div class="car-face" style="transform: rotateY(180deg)">
-                        <svg class="w-full max-w-lg" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Rear view of futuristic car -->
-                            <path d="M150 300 L650 300 L600 200 L200 200 Z" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
-                            <path d="M200 200 L600 200 L550 150 L250 150 Z" fill="#16213e" stroke="#00ffff" stroke-width="2"/>
-                            <rect x="200" y="220" width="400" height="10" fill="#ff1b1b" opacity="0.7"/>
-                            <circle cx="250" cy="250" r="40" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="250" cy="250" r="30" fill="#1a1a2e" stroke="#ff1b1b" stroke-width="1"/>
-                            <circle cx="250" cy="250" r="15" fill="#ff1b1b" opacity="0.7"/>
-                            <circle cx="550" cy="250" r="40" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="550" cy="250" r="30" fill="#1a1a2e" stroke="#ff1b1b" stroke-width="1"/>
-                            <circle cx="550" cy="250" r="15" fill="#ff1b1b" opacity="0.7"/>
-                        </svg>
-                    </div>
-                    <div class="car-face" style="transform: rotateY(270deg)">
-                        <svg class="w-full max-w-lg" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Other side view of futuristic car -->
-                            <path d="M100 300 L700 300 L650 250 L200 250 L150 280 Z" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
-                            <path d="M200 250 L650 250 L600 180 L250 180 Z" fill="#16213e" stroke="#00ffff" stroke-width="2"/>
-                            <path d="M250 180 L600 180 L580 150 L270 150 Z" fill="#0f0f0f" stroke="#00ffff" stroke-width="2"/>
-                            <rect x="300" y="200" width="250" height="30" fill="#00ffff" opacity="0.2"/>
-                            <circle cx="220" cy="300" r="30" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="220" cy="300" r="15" fill="#ff1b1b" opacity="0.7"/>
-                            <circle cx="580" cy="300" r="30" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="580" cy="300" r="15" fill="#ff1b1b" opacity="0.7"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div class="rotate-controls">
-                <button class="rotate-btn" id="rotateLeft">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L9.414 11H13a1 1 0 100-2H9.414l1.293-1.293z" clip-rule="evenodd" />
-                    </svg>
-                    ROTATE LEFT
-                </button>
-                <button class="rotate-btn" id="rotateRight">
-                    ROTATE RIGHT
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.293 7.707a1 1 0 011.414-1.414l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L10.586 11H7a1 1 0 110-2h3.586l-1.293-1.293z" clip-rule="evenodd" />
-                    </svg>
-                </button>
-            </div>
+      </div>
+      
+      <!-- 3D Car Model -->
+      <div id="models" class="w-full max-w-5xl mx-auto mt-20 fade-in delay-300">
+        <h2 class="orbitron text-3xl font-bold mb-8 text-center">
+          <span class="neon-blue-glow">ASIMOV</span> <span class="red-glow">NEXUS</span>
+        </h2>
+        <CarModel modelId="carModel" leftBtnId="rotateLeft" rightBtnId="rotateRight" />
+      </div>
+      
+      <!-- Gallery -->
+      <div class="w-full max-w-5xl mx-auto mt-16 fade-in delay-400">
+        <div class="gallery">
+          <div class="gallery-track" id="galleryTrack">
+            <!-- Gallery items would go here -->
+          </div>
         </div>
-        
-        <!-- Gallery -->
-        <div class="w-full max-w-5xl mx-auto mt-16 fade-in delay-400">
-            <div class="gallery">
-                <div class="gallery-track" id="galleryTrack">
-                    <div class="gallery-item glassmorphism">
-                        <svg class="w-full h-full" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Front angle view -->
-                            <path d="M50 150 L250 150 L230 80 L70 80 Z" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
-                            <path d="M70 80 L230 80 L210 50 L90 50 Z" fill="#16213e" stroke="#00ffff" stroke-width="2"/>
-                            <rect x="100" y="70" width="100" height="10" fill="#00ffff" opacity="0.3"/>
-                            <circle cx="100" cy="130" r="20" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="100" cy="130" r="10" fill="#ff1b1b" opacity="0.7"/>
-                            <circle cx="200" cy="130" r="20" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="200" cy="130" r="10" fill="#ff1b1b" opacity="0.7"/>
-                        </svg>
-                    </div>
-                    <div class="gallery-item glassmorphism">
-                        <svg class="w-full h-full" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Side view -->
-                            <path d="M30 150 L270 150 L250 120 L70 120 L50 140 Z" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
-                            <path d="M70 120 L250 120 L230 70 L90 70 Z" fill="#16213e" stroke="#00ffff" stroke-width="2"/>
-                            <rect x="100" y="90" width="120" height="15" fill="#00ffff" opacity="0.2"/>
-                            <circle cx="90" cy="150" r="15" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="90" cy="150" r="7" fill="#ff1b1b" opacity="0.7"/>
-                            <circle cx="210" cy="150" r="15" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="210" cy="150" r="7" fill="#ff1b1b" opacity="0.7"/>
-                        </svg>
-                    </div>
-                    <div class="gallery-item glassmorphism">
-                        <svg class="w-full h-full" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Top view -->
-                            <path d="M75 50 L225 50 L250 150 L50 150 Z" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
-                            <rect x="90" y="70" width="120" height="60" fill="#16213e" stroke="#00ffff" stroke-width="1"/>
-                            <path d="M90 70 L210 70 L200 100 L100 100 Z" fill="#00ffff" opacity="0.2"/>
-                            <circle cx="80" cy="120" r="10" fill="#ff1b1b" opacity="0.5"/>
-                            <circle cx="220" cy="120" r="10" fill="#ff1b1b" opacity="0.5"/>
-                        </svg>
-                    </div>
-                    <div class="gallery-item glassmorphism">
-                        <svg class="w-full h-full" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Rear view -->
-                            <path d="M50 150 L250 150 L230 80 L70 80 Z" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
-                            <path d="M70 80 L230 80 L210 50 L90 50 Z" fill="#16213e" stroke="#00ffff" stroke-width="2"/>
-                            <rect x="70" y="100" width="160" height="5" fill="#ff1b1b" opacity="0.7"/>
-                            <circle cx="100" cy="130" r="20" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="100" cy="130" r="10" fill="#ff1b1b" opacity="0.7"/>
-                            <circle cx="200" cy="130" r="20" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="200" cy="130" r="10" fill="#ff1b1b" opacity="0.7"/>
-                        </svg>
-                    </div>
-                    <div class="gallery-item glassmorphism">
-                        <svg class="w-full h-full" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Interior view -->
-                            <rect x="30" y="50" width="240" height="100" rx="10" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
-                            <path d="M50 80 L250 80" stroke="#00ffff" stroke-width="1" stroke-dasharray="5 5"/>
-                            <rect x="70" y="100" width="160" height="30" rx="5" fill="#16213e" stroke="#00ffff" stroke-width="1"/>
-                            <circle cx="150" cy="115" r="10" fill="#ff1b1b" opacity="0.7"/>
-                            <rect x="180" y="105" width="30" height="20" rx="3" fill="#00ffff" opacity="0.3"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Technical Details Button -->
-        <div class="mt-16 text-center fade-in delay-500">
-            <button id="techDetailsBtn" class="bg-red-600 text-white px-10 py-4 rounded-full orbitron text-xl button-glow" data-text="techDetailsBtn">
-                TECHNICAL DETAILS
-            </button>
-        </div>
+      </div>
+      
+      <!-- Technical Details Button -->
+      <div class="mt-16 text-center fade-in delay-500">
+        <button id="techDetailsBtn" class="bg-red-600 text-white px-10 py-4 rounded-full orbitron text-xl button-glow" data-text="techDetailsBtn">
+          TECHNICAL DETAILS
+        </button>
+      </div>
     </section>
     
     <!-- Technical Details Section -->
     <section id="tech" class="min-h-screen py-20 pb-24 px-6">
-        <div class="container mx-auto">
-            <h2 class="orbitron text-4xl font-bold mb-16 text-center">
-                <span class="red-glow" data-text="techTitle1">TECHNICAL</span> <span class="neon-blue-glow" data-text="techTitle2">SPECIFICATIONS</span>
-            </h2>
-            
-            <div class="flex flex-col lg:flex-row gap-12">
-                <!-- Left: Another 360 view -->
-                <div class="lg:w-1/2">
-                    <div class="car-model-container">
-                        <div class="car-model" id="techCarModel">
-                            <div class="car-face" style="transform: rotateY(0deg)">
-                                <svg class="w-full max-w-lg" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <!-- Front view with open hood -->
-                                    <path d="M150 300 L650 300 L600 200 L200 200 Z" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
-                                    <path d="M200 200 L600 200 L550 150 L250 150 Z" fill="#16213e" stroke="#00ffff" stroke-width="2" stroke-dasharray="5 5"/>
-                                    <path d="M250 150 L550 150 L500 100 L300 100 Z" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                                    <!-- Engine components -->
-                                    <rect x="350" y="120" width="100" height="20" fill="#ff1b1b" opacity="0.5"/>
-                                    <circle cx="380" cy="130" r="8" fill="#00ffff"/>
-                                    <circle cx="420" cy="130" r="8" fill="#00ffff"/>
-                                    <rect x="330" y="110" width="140" height="5" fill="#00ffff" opacity="0.7"/>
-                                    <rect x="330" y="145" width="140" height="5" fill="#00ffff" opacity="0.7"/>
-                                    <circle cx="250" cy="250" r="40" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                                    <circle cx="250" cy="250" r="15" fill="#ff1b1b" opacity="0.7"/>
-                                    <circle cx="550" cy="250" r="40" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                                    <circle cx="550" cy="250" r="15" fill="#ff1b1b" opacity="0.7"/>
-                                </svg>
-                            </div>
-                            <div class="car-face" style="transform: rotateY(90deg)">
-                                <svg class="w-full max-w-lg" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <!-- Side view with interior visible -->
-                                    <path d="M100 300 L700 300 L650 250 L200 250 L150 280 Z" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
-                                    <path d="M200 250 L650 250 L600 180 L250 180 Z" fill="#16213e" stroke="#00ffff" stroke-width="2" opacity="0.5"/>
-                                    <!-- Interior components -->
-                                    <rect x="300" y="200" width="250" height="40" fill="#0f0f0f" stroke="#00ffff" stroke-width="1"/>
-                                    <circle cx="400" cy="220" r="15" fill="#ff1b1b" opacity="0.7"/>
-                                    <rect x="450" y="210" width="60" height="20" rx="3" fill="#00ffff" opacity="0.3"/>
-                                    <circle cx="220" cy="300" r="30" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                                    <circle cx="220" cy="300" r="15" fill="#ff1b1b" opacity="0.7"/>
-                                    <circle cx="580" cy="300" r="30" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                                    <circle cx="580" cy="300" r="15" fill="#ff1b1b" opacity="0.7"/>
-                                </svg>
-                            </div>
-                            <div class="car-face" style="transform: rotateY(180deg)">
-                                <svg class="w-full max-w-lg" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <!-- Rear view with trunk open -->
-                                    <path d="M150 300 L650 300 L600 200 L200 200 Z" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
-                                    <path d="M200 200 L600 200 L550 150 L250 150 Z" fill="#16213e" stroke="#00ffff" stroke-width="2" stroke-dasharray="5 5"/>
-                                    <!-- Trunk components -->
-                                    <rect x="300" y="170" width="200" height="30" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="1"/>
-                                    <rect x="320" y="180" width="160" height="10" fill="#ff1b1b" opacity="0.3"/>
-                                    <circle cx="250" cy="250" r="40" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                                    <circle cx="250" cy="250" r="15" fill="#ff1b1b" opacity="0.7"/>
-                                    <circle cx="550" cy="250" r="40" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                                    <circle cx="550" cy="250" r="15" fill="#ff1b1b" opacity="0.7"/>
-                                </svg>
-                            </div>
-                            <div class="car-face" style="transform: rotateY(270deg)">
-                                <svg class="w-full max-w-lg" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <!-- Other side view with battery visible -->
-                                    <path d="M100 300 L700 300 L650 250 L200 250 L150 280 Z" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
-                                    <path d="M200 250 L650 250 L600 180 L250 180 Z" fill="#16213e" stroke="#00ffff" stroke-width="2" opacity="0.5"/>
-                                    <!-- Battery components -->
-                                    <rect x="300" y="230" width="250" height="10" fill="#00ffff" opacity="0.7"/>
-                                    <rect x="320" y="210" width="50" height="20" fill="#00ffff" opacity="0.3"/>
-                                    <rect x="380" y="210" width="50" height="20" fill="#00ffff" opacity="0.3"/>
-                                    <rect x="440" y="210" width="50" height="20" fill="#00ffff" opacity="0.3"/>
-                                    <rect x="500" y="210" width="50" height="20" fill="#00ffff" opacity="0.3"/>
-                                    <circle cx="220" cy="300" r="30" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                                    <circle cx="220" cy="300" r="15" fill="#ff1b1b" opacity="0.7"/>
-                                    <circle cx="580" cy="300" r="30" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                                    <circle cx="580" cy="300" r="15" fill="#ff1b1b" opacity="0.7"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="rotate-controls">
-                        <button class="rotate-btn" id="techRotateLeft">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L9.414 11H13a1 1 0 100-2H9.414l1.293-1.293z" clip-rule="evenodd" />
-                            </svg>
-                            ROTATE LEFT
-                        </button>
-                        <button class="rotate-btn" id="techRotateRight">
-                            ROTATE RIGHT
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.293 7.707a1 1 0 011.414-1.414l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L10.586 11H7a1 1 0 110-2h3.586l-1.293-1.293z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Right: Technical Specifications -->
-                <div class="lg:w-1/2">
-                    <div class="glassmorphism p-8">
-                        <ul class="space-y-6">
-                            <li class="tech-spec p-4 glassmorphism" id="spec1">
-                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec1Title">AI Neural Network</h3>
-                                <p data-text="spec1Desc">Advanced 12-core quantum neural processor with 1.2 trillion parameters for real-time decision making and obstacle avoidance.</p>
-                            </li>
-                            <li class="tech-spec p-4 glassmorphism" id="spec2">
-                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec2Title">Battery Range</h3>
-                                <p data-text="spec2Desc">Next-gen solid-state battery with 800km range on a single charge. Fast charging capability: 10-80% in just 15 minutes.</p>
-                            </li>
-                            <li class="tech-spec p-4 glassmorphism" id="spec3">
-                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec3Title">Sensor Array</h3>
-                                <p data-text="spec3Desc">360° LiDAR system with 16 high-definition cameras and ultrasonic sensors providing complete environmental awareness up to 300 meters.</p>
-                            </li>
-                            <li class="tech-spec p-4 glassmorphism" id="spec4">
-                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec4Title">Performance</h3>
-                                <p data-text="spec4Desc">Quad motor configuration delivering 1,200 horsepower. 0-100 km/h in 2.3 seconds with intelligent torque vectoring for optimal handling.</p>
-                            </li>
-                            <li class="tech-spec p-4 glassmorphism" id="spec5">
-                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec5Title">Safety Systems</h3>
-                                <p data-text="spec5Desc">Predictive collision avoidance with 99.98% accuracy. Reinforced carbon-fiber frame with 12 airbags and emergency autonomous evasion protocols.</p>
-                            </li>
-                            <li class="tech-spec p-4 glassmorphism" id="spec6">
-                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec6Title">Connectivity</h3>
-                                <p data-text="spec6Desc">Integrated 6G network capabilities with satellite uplink for continuous over-the-air updates and real-time traffic optimization.</p>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+      <div class="container mx-auto">
+        <h2 class="orbitron text-4xl font-bold mb-16 text-center">
+          <span class="red-glow" data-text="techTitle1">TECHNICAL</span> <span class="neon-blue-glow" data-text="techTitle2">SPECIFICATIONS</span>
+        </h2>
+        
+        <div class="flex flex-col lg:flex-row gap-12">
+          <!-- Left: Another 360 view -->
+          <div class="lg:w-1/2">
+            <CarModel modelId="techCarModel" leftBtnId="techRotateLeft" rightBtnId="techRotateRight" />
+          </div>
+          
+          <!-- Right: Technical Specifications -->
+          <div class="lg:w-1/2">
+            <div class="glassmorphism p-8">
+              <ul class="space-y-6">
+                <li class="tech-spec p-4 glassmorphism" id="spec1">
+                  <h3 class="orbitron text-xl font-bold mb-2" data-text="spec1Title">AI Neural Network</h3>
+                  <p data-text="spec1Desc">Advanced 12-core quantum neural processor with 1.2 trillion parameters for real-time decision making and obstacle avoidance.</p>
+                </li>
+                <li class="tech-spec p-4 glassmorphism" id="spec2">
+                  <h3 class="orbitron text-xl font-bold mb-2" data-text="spec2Title">Battery Range</h3>
+                  <p data-text="spec2Desc">Next-gen solid-state battery with 800km range on a single charge. Fast charging capability: 10-80% in just 15 minutes.</p>
+                </li>
+                <li class="tech-spec p-4 glassmorphism" id="spec3">
+                  <h3 class="orbitron text-xl font-bold mb-2" data-text="spec3Title">Sensor Array</h3>
+                  <p data-text="spec3Desc">360° LiDAR system with 16 high-definition cameras and ultrasonic sensors providing complete environmental awareness up to 300 meters.</p>
+                </li>
+                <li class="tech-spec p-4 glassmorphism" id="spec4">
+                  <h3 class="orbitron text-xl font-bold mb-2" data-text="spec4Title">Performance</h3>
+                  <p data-text="spec4Desc">Quad motor configuration delivering 1,200 horsepower. 0-100 km/h in 2.3 seconds with intelligent torque vectoring for optimal handling.</p>
+                </li>
+                <li class="tech-spec p-4 glassmorphism" id="spec5">
+                  <h3 class="orbitron text-xl font-bold mb-2" data-text="spec5Title">Safety Systems</h3>
+                  <p data-text="spec5Desc">Predictive collision avoidance with 99.98% accuracy. Reinforced carbon-fiber frame with 12 airbags and emergency autonomous evasion protocols.</p>
+                </li>
+                <li class="tech-spec p-4 glassmorphism" id="spec6">
+                  <h3 class="orbitron text-xl font-bold mb-2" data-text="spec6Title">Connectivity</h3>
+                  <p data-text="spec6Desc">Integrated 6G network capabilities with satellite uplink for continuous over-the-air updates and real-time traffic optimization.</p>
+                </li>
+              </ul>
             </div>
+          </div>
         </div>
+      </div>
     </section>
+  </div>
+  
+  <!-- Other pages would be separate Astro files -->
+  
+  <script>
+    // Language system and all JavaScript functionality
+    let currentLanguage = 'tr';
     
-    <!-- Footer -->
-    <footer class="py-12 pb-20 px-6 border-t border-cyan-900">
-        <div class="container mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="flex items-center mb-8 md:mb-0">
-                    <svg class="w-10 h-10 mr-3" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="50" cy="50" r="45" stroke="#00ffff" stroke-width="2"/>
-                        <path d="M30 30L70 70M30 70L70 30" stroke="#00ffff" stroke-width="2"/>
-                        <circle cx="50" cy="50" r="20" stroke="#ff1b1b" stroke-width="2"/>
-                    </svg>
-                    <h2 class="orbitron text-2xl font-bold text-white">
-                        <span class="neon-blue-glow">ASIMOV</span>
-                    </h2>
-                </div>
-                <div class="flex space-x-6 mb-8 md:mb-0">
-                    <a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-            <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between">
-                <p class="text-gray-500 text-sm mb-4 md:mb-0" data-text="footerCopyright">© 2023 ASIMOV Autonomous Vehicles. All rights reserved.</p>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-500 text-sm hover:text-cyan-400 transition-colors" data-text="privacyPolicy">Privacy Policy</a>
-                    <a href="#" class="text-gray-500 text-sm hover:text-cyan-400 transition-colors" data-text="termsOfService">Terms of Service</a>
-                    <a href="#" class="text-gray-500 text-sm hover:text-cyan-400 transition-colors" data-text="contactFooter">Contact</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-    </div>
+    const translations = {
+      tr: {
+        // All Turkish translations
+        isaac: 'ISAAC',
+        about: 'HAKKIMIZDA',
+        contact: 'İLETİŞİM',
+        ec: 'EC',
+        heroTitle1: 'OTONOM',
+        heroTitle2: 'SÜRÜŞÜN GELECEĞİ',
+        heroSubtitle: 'ASIMOV\'un son teknoloji yapay zeka sistemleri ve benzersiz güvenlik özellikleri ile otonom sürüş devrimini deneyimleyin.',
+        reserveNow: 'ŞİMDİ REZERVE ET',
+        learnMore: 'DAHA FAZLA BİLGİ',
+        techTitle1: 'TEKNİK',
+        techTitle2: 'ÖZELLİKLER',
+        techDetailsBtn: 'TEKNİK DETAYLAR',
+        spec1Title: 'Yapay Zeka Sinir Ağı',
+        spec1Desc: 'Gerçek zamanlı karar verme ve engel kaçınma için 1.2 trilyon parametreli gelişmiş 12 çekirdekli kuantum sinir işlemcisi.',
+        spec2Title: 'Batarya Menzili',
+        spec2Desc: 'Tek şarjla 800km menzil sunan yeni nesil katı hal bataryası. Hızlı şarj özelliği: Sadece 15 dakikada %10-80.',
+        spec3Title: 'Sensör Dizisi',
+        spec3Desc: '300 metreye kadar tam çevresel farkındalık sağlayan 16 yüksek çözünürlüklü kamera ve ultrasonik sensörlerle 360° LiDAR sistemi.',
+        spec4Title: 'Performans',
+        spec4Desc: '1.200 beygir gücü sunan dörtlü motor konfigürasyonu. Optimal yol tutuş için akıllı tork vektörleme ile 0-100 km/s 2.3 saniyede.',
+        spec5Title: 'Güvenlik Sistemleri',
+        spec5Desc: '%99.98 doğrulukla öngörülü çarpışma kaçınma. 12 hava yastığı ve acil durum otonom kaçınma protokolleri ile güçlendirilmiş karbon fiber çerçeve.',
+        spec6Title: 'Bağlantı',
+        spec6Desc: 'Sürekli kablosuz güncellemeler ve gerçek zamanlı trafik optimizasyonu için uydu bağlantısı ile entegre 6G ağ yetenekleri.',
+        loadingText: 'SİSTEMLER BAŞLATILIYOR'
+      },
+      en: {
+        // All English translations
+        isaac: 'ISAAC',
+        about: 'ABOUT',
+        contact: 'CONTACT',
+        ec: 'EC',
+        heroTitle1: 'AUTONOMOUS',
+        heroTitle2: 'DRIVING',
+        heroSubtitle: 'Experience the revolution in self-driving technology with ASIMOV\'s cutting-edge AI systems and unparalleled safety features.',
+        reserveNow: 'RESERVE NOW',
+        learnMore: 'LEARN MORE',
+        techTitle1: 'TECHNICAL',
+        techTitle2: 'SPECIFICATIONS',
+        techDetailsBtn: 'TECHNICAL DETAILS',
+        spec1Title: 'AI Neural Network',
+        spec1Desc: 'Advanced 12-core quantum neural processor with 1.2 trillion parameters for real-time decision making and obstacle avoidance.',
+        spec2Title: 'Battery Range',
+        spec2Desc: 'Next-gen solid-state battery with 800km range on a single charge. Fast charging capability: 10-80% in just 15 minutes.',
+        spec3Title: 'Sensor Array',
+        spec3Desc: '360° LiDAR system with 16 high-definition cameras and ultrasonic sensors providing complete environmental awareness up to 300 meters.',
+        spec4Title: 'Performance',
+        spec4Desc: 'Quad motor configuration delivering 1,200 horsepower. 0-100 km/h in 2.3 seconds with intelligent torque vectoring for optimal handling.',
+        spec5Title: 'Safety Systems',
+        spec5Desc: 'Predictive collision avoidance with 99.98% accuracy. Reinforced carbon-fiber frame with 12 airbags and emergency autonomous evasion protocols.',
+        spec6Title: 'Connectivity',
+        spec6Desc: 'Integrated 6G network capabilities with satellite uplink for continuous over-the-air updates and real-time traffic optimization.',
+        loadingText: 'INITIALIZING SYSTEMS'
+      }
+    };
     
-    <!-- About Page -->
-    <div id="about-page" class="page-content hidden">
-        <section class="min-h-screen pt-24 pb-20 px-6 flex flex-col justify-center items-center">
-            <div class="container mx-auto text-center">
-                <h1 class="orbitron text-4xl md:text-6xl font-bold mb-6">
-                    <span class="neon-blue-glow" data-text="aboutTitle">HAKKIMIZDA</span>
-                </h1>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto" data-text="aboutContent">
-                    Bu sayfa henüz hazırlanmaktadır...
-                </p>
-            </div>
-        </section>
-    </div>
+    function updateLanguage() {
+      const t = translations[currentLanguage];
+      
+      // Update all text elements
+      document.querySelectorAll('[data-nav]').forEach(el => {
+        const key = el.getAttribute('data-nav');
+        if (t[key]) el.textContent = t[key];
+      });
+      
+      document.querySelectorAll('[data-text]').forEach(el => {
+        const key = el.getAttribute('data-text');
+        if (t[key]) el.textContent = t[key];
+      });
+      
+      // Update language button
+      document.querySelector('[data-text="langBtn"]').textContent = currentLanguage.toUpperCase();
+    }
     
-    <!-- Contact Page -->
-    <div id="contact-page" class="page-content hidden">
-        <section class="min-h-screen pt-24 pb-20 px-6 flex flex-col justify-center items-center">
-            <div class="container mx-auto text-center">
-                <h1 class="orbitron text-4xl md:text-6xl font-bold mb-6">
-                    <span class="neon-blue-glow" data-text="contactTitle">İLETİŞİM</span>
-                </h1>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto" data-text="contactContent">
-                    Bu sayfa henüz hazırlanmaktadır...
-                </p>
-            </div>
-        </section>
-    </div>
+    function toggleLanguage() {
+      currentLanguage = currentLanguage === 'tr' ? 'en' : 'tr';
+      updateLanguage();
+    }
     
-    <!-- EC Page -->
-    <div id="ec-page" class="page-content hidden">
-        <section class="min-h-screen pt-24 pb-20 px-6 flex flex-col justify-center items-center">
-            <div class="container mx-auto text-center">
-                <h1 class="orbitron text-4xl md:text-6xl font-bold mb-6">
-                    <span class="neon-blue-glow" data-text="ecTitle">EC</span>
-                </h1>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto" data-text="ecContent">
-                    Bu sayfa henüz hazırlanmaktadır...
-                </p>
-            </div>
-        </section>
-    </div>
-
-    <script>
-        // Language system
-        let currentLanguage = 'tr';
+    // Make functions global
+    window.toggleLanguage = toggleLanguage;
+    window.showPage = function(pageId) {
+      // Page navigation logic
+      const pages = document.querySelectorAll('.page-content');
+      pages.forEach(page => {
+        page.classList.add('hidden');
+      });
+      
+      const targetPage = document.getElementById(pageId + '-page');
+      if (targetPage) {
+        targetPage.classList.remove('hidden');
+      }
+    };
+    
+    // Initialize everything when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Loading screen animation
+      const loadingScreen = document.getElementById('loadingScreen');
+      const speedNeedle = document.getElementById('speedNeedle');
+      const speedValue = document.getElementById('speedValue');
+      let speed = 0;
+      let direction = 1;
+      
+      const speedInterval = setInterval(() => {
+        speed += 2 * direction;
         
-        const translations = {
-            tr: {
-                // Navigation
-                isaac: 'ISAAC',
-                about: 'HAKKIMIZDA',
-                contact: 'İLETİŞİM',
-                ec: 'EC',
-                
-                // Hero section
-                heroTitle1: 'OTONOM',
-                heroTitle2: 'SÜRÜŞÜN GELECEĞİ',
-                heroSubtitle: 'ASIMOV\'un son teknoloji yapay zeka sistemleri ve benzersiz güvenlik özellikleri ile otonom sürüş devrimini deneyimleyin.',
-                reserveNow: 'ŞİMDİ REZERVE ET',
-                learnMore: 'DAHA FAZLA BİLGİ',
-                
-                // Technical section
-                techTitle1: 'TEKNİK',
-                techTitle2: 'ÖZELLİKLER',
-                techDetailsBtn: 'TEKNİK DETAYLAR',
-                
-                // Specifications
-                spec1Title: 'Yapay Zeka Sinir Ağı',
-                spec1Desc: 'Gerçek zamanlı karar verme ve engel kaçınma için 1.2 trilyon parametreli gelişmiş 12 çekirdekli kuantum sinir işlemcisi.',
-                spec2Title: 'Batarya Menzili',
-                spec2Desc: 'Tek şarjla 800km menzil sunan yeni nesil katı hal bataryası. Hızlı şarj özelliği: Sadece 15 dakikada %10-80.',
-                spec3Title: 'Sensör Dizisi',
-                spec3Desc: '300 metreye kadar tam çevresel farkındalık sağlayan 16 yüksek çözünürlüklü kamera ve ultrasonik sensörlerle 360° LiDAR sistemi.',
-                spec4Title: 'Performans',
-                spec4Desc: '1.200 beygir gücü sunan dörtlü motor konfigürasyonu. Optimal yol tutuş için akıllı tork vektörleme ile 0-100 km/s 2.3 saniyede.',
-                spec5Title: 'Güvenlik Sistemleri',
-                spec5Desc: '%99.98 doğrulukla öngörülü çarpışma kaçınma. 12 hava yastığı ve acil durum otonom kaçınma protokolleri ile güçlendirilmiş karbon fiber çerçeve.',
-                spec6Title: 'Bağlantı',
-                spec6Desc: 'Sürekli kablosuz güncellemeler ve gerçek zamanlı trafik optimizasyonu için uydu bağlantısı ile entegre 6G ağ yetenekleri.',
-                
-                // Pages
-                aboutTitle: 'HAKKIMIZDA',
-                aboutContent: 'Bu sayfa henüz hazırlanmaktadır...',
-                contactTitle: 'İLETİŞİM',
-                contactContent: 'Bu sayfa henüz hazırlanmaktadır...',
-                ecTitle: 'EC',
-                ecContent: 'Bu sayfa henüz hazırlanmaktadır...',
-                
-                // Loading
-                loadingText: 'SİSTEMLER BAŞLATILIYOR',
-                
-                // Footer
-                footerCopyright: '© 2023 ASIMOV Otonom Araçlar. Tüm hakları saklıdır.',
-                privacyPolicy: 'Gizlilik Politikası',
-                termsOfService: 'Hizmet Şartları',
-                contactFooter: 'İletişim'
-            },
-            en: {
-                // Navigation
-                isaac: 'ISAAC',
-                about: 'ABOUT',
-                contact: 'CONTACT',
-                ec: 'EC',
-                
-                // Hero section
-                heroTitle1: 'AUTONOMOUS',
-                heroTitle2: 'DRIVING',
-                heroSubtitle: 'Experience the revolution in self-driving technology with ASIMOV\'s cutting-edge AI systems and unparalleled safety features.',
-                reserveNow: 'RESERVE NOW',
-                learnMore: 'LEARN MORE',
-                
-                // Technical section
-                techTitle1: 'TECHNICAL',
-                techTitle2: 'SPECIFICATIONS',
-                techDetailsBtn: 'TECHNICAL DETAILS',
-                
-                // Specifications
-                spec1Title: 'AI Neural Network',
-                spec1Desc: 'Advanced 12-core quantum neural processor with 1.2 trillion parameters for real-time decision making and obstacle avoidance.',
-                spec2Title: 'Battery Range',
-                spec2Desc: 'Next-gen solid-state battery with 800km range on a single charge. Fast charging capability: 10-80% in just 15 minutes.',
-                spec3Title: 'Sensor Array',
-                spec3Desc: '360° LiDAR system with 16 high-definition cameras and ultrasonic sensors providing complete environmental awareness up to 300 meters.',
-                spec4Title: 'Performance',
-                spec4Desc: 'Quad motor configuration delivering 1,200 horsepower. 0-100 km/h in 2.3 seconds with intelligent torque vectoring for optimal handling.',
-                spec5Title: 'Safety Systems',
-                spec5Desc: 'Predictive collision avoidance with 99.98% accuracy. Reinforced carbon-fiber frame with 12 airbags and emergency autonomous evasion protocols.',
-                spec6Title: 'Connectivity',
-                spec6Desc: 'Integrated 6G network capabilities with satellite uplink for continuous over-the-air updates and real-time traffic optimization.',
-                
-                // Pages
-                aboutTitle: 'ABOUT US',
-                aboutContent: 'This page is under construction...',
-                contactTitle: 'CONTACT',
-                contactContent: 'This page is under construction...',
-                ecTitle: 'EC',
-                ecContent: 'This page is under construction...',
-                
-                // Loading
-                loadingText: 'INITIALIZING SYSTEMS',
-                
-                // Footer
-                footerCopyright: '© 2023 ASIMOV Autonomous Vehicles. All rights reserved.',
-                privacyPolicy: 'Privacy Policy',
-                termsOfService: 'Terms of Service',
-                contactFooter: 'Contact'
-            }
-        };
-        
-        function updateLanguage() {
-            const t = translations[currentLanguage];
-            
-            // Update navigation
-            document.querySelector('[data-nav="isaac"]').textContent = t.isaac;
-            document.querySelector('[data-nav="about"]').textContent = t.about;
-            document.querySelector('[data-nav="contact"]').textContent = t.contact;
-            document.querySelector('[data-nav="ec"]').textContent = t.ec;
-            
-            // Update hero section
-            document.querySelector('[data-text="heroTitle1"]').textContent = t.heroTitle1;
-            document.querySelector('[data-text="heroTitle2"]').textContent = t.heroTitle2;
-            document.querySelector('[data-text="heroSubtitle"]').textContent = t.heroSubtitle;
-            document.querySelector('[data-text="reserveNow"]').textContent = t.reserveNow;
-            document.querySelector('[data-text="learnMore"]').textContent = t.learnMore;
-            
-            // Update technical section
-            document.querySelector('[data-text="techTitle1"]').textContent = t.techTitle1;
-            document.querySelector('[data-text="techTitle2"]').textContent = t.techTitle2;
-            document.querySelector('[data-text="techDetailsBtn"]').textContent = t.techDetailsBtn;
-            
-            // Update specifications
-            for (let i = 1; i <= 6; i++) {
-                document.querySelector(`[data-text="spec${i}Title"]`).textContent = t[`spec${i}Title`];
-                document.querySelector(`[data-text="spec${i}Desc"]`).textContent = t[`spec${i}Desc`];
-            }
-            
-            // Update pages
-            document.querySelector('[data-text="aboutTitle"]').textContent = t.aboutTitle;
-            document.querySelector('[data-text="aboutContent"]').textContent = t.aboutContent;
-            document.querySelector('[data-text="contactTitle"]').textContent = t.contactTitle;
-            document.querySelector('[data-text="contactContent"]').textContent = t.contactContent;
-            document.querySelector('[data-text="ecTitle"]').textContent = t.ecTitle;
-            document.querySelector('[data-text="ecContent"]').textContent = t.ecContent;
-            
-            // Update loading text
-            document.querySelector('[data-text="loadingText"]').textContent = t.loadingText;
-            
-            // Update footer
-            document.querySelector('[data-text="footerCopyright"]').textContent = t.footerCopyright;
-            document.querySelector('[data-text="privacyPolicy"]').textContent = t.privacyPolicy;
-            document.querySelector('[data-text="termsOfService"]').textContent = t.termsOfService;
-            document.querySelector('[data-text="contactFooter"]').textContent = t.contactFooter;
-            
-            // Update language button
-            document.querySelector('[data-text="langBtn"]').textContent = currentLanguage.toUpperCase();
+        if (speed >= 100) {
+          direction = -1;
+        } else if (speed <= 0 && direction === -1) {
+          clearInterval(speedInterval);
+          setTimeout(() => {
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => {
+              loadingScreen.style.display = 'none';
+            }, 1000);
+          }, 500);
         }
         
-        function toggleLanguage() {
-            currentLanguage = currentLanguage === 'tr' ? 'en' : 'tr';
-            updateLanguage();
-        }
-
-        // Loading screen with speedometer animation
-        document.addEventListener('DOMContentLoaded', function() {
-            const loadingScreen = document.getElementById('loadingScreen');
-            const speedNeedle = document.getElementById('speedNeedle');
-            const speedValue = document.getElementById('speedValue');
-            let speed = 0;
-            let direction = 1; // 1 for increasing, -1 for decreasing
-            
-            // Speedometer animation
-            const speedInterval = setInterval(() => {
-                speed += 2 * direction;
-                
-                if (speed >= 100) {
-                    direction = -1;
-                } else if (speed <= 0 && direction === -1) {
-                    clearInterval(speedInterval);
-                    setTimeout(() => {
-                        loadingScreen.style.opacity = '0';
-                        setTimeout(() => {
-                            loadingScreen.style.display = 'none';
-                        }, 1000);
-                    }, 500);
-                }
-                
-                // Update speedometer
-                const rotation = -90 + (speed * 1.8); // -90 to 90 degrees
-                speedNeedle.style.transform = `rotate(${rotation}deg)`;
-                speedValue.textContent = Math.round(speed);
-            }, 20);
-            
-            // Create particles
-            const particles = document.getElementById('particles');
-            for (let i = 0; i < 50; i++) {
-                createParticle();
-            }
-            
-            // Initialize car rotation
-            initCarRotation('carModel', 'rotateLeft', 'rotateRight');
-            initCarRotation('techCarModel', 'techRotateLeft', 'techRotateRight');
-            
-            // Initialize gallery auto-scroll
-            initGallery();
-            
-            // Initialize tech specs highlighting
-            initTechSpecs();
-            
-            // Scroll to tech details when button is clicked
-            document.getElementById('techDetailsBtn').addEventListener('click', function() {
-                document.getElementById('tech').scrollIntoView({ behavior: 'smooth' });
-            });
-            
-            // Initialize language system
-            updateLanguage();
+        const rotation = -90 + (speed * 1.8);
+        speedNeedle.style.transform = `rotate(${rotation}deg)`;
+        speedValue.textContent = Math.round(speed);
+      }, 20);
+      
+      // Initialize car rotation
+      function initCarRotation(modelId, leftBtnId, rightBtnId) {
+        const carModel = document.getElementById(modelId);
+        let currentRotation = 0;
+        
+        document.getElementById(leftBtnId)?.addEventListener('click', function() {
+          currentRotation -= 90;
+          carModel.style.transform = `rotateY(${currentRotation}deg)`;
         });
         
-        // Page navigation function
-        function showPage(pageId) {
-            // Hide all pages
-            const pages = document.querySelectorAll('.page-content');
-            pages.forEach(page => {
-                page.classList.add('hidden');
-            });
-            
-            // Show selected page
-            const targetPage = document.getElementById(pageId + '-page');
-            if (targetPage) {
-                targetPage.classList.remove('hidden');
-            }
-        }
-        
-        // Create a single particle
-        function createParticle() {
-            const particles = document.getElementById('particles');
-            const particle = document.createElement('div');
-            particle.classList.add('particle');
-            
-            // Random size between 1-3px
-            const size = Math.random() * 2 + 1;
-            particle.style.width = `${size}px`;
-            particle.style.height = `${size}px`;
-            
-            // Random position
-            particle.style.left = `${Math.random() * 100}%`;
-            particle.style.top = `${Math.random() * 100}%`;
-            
-            particles.appendChild(particle);
-            
-            // Animate particle
-            animateParticle(particle);
-        }
-        
-        // Animate a particle
-        function animateParticle(particle) {
-            const duration = Math.random() * 15000 + 10000; // 10-25 seconds
-            const xDistance = (Math.random() - 0.5) * 100; // -50 to 50 vw
-            const yDistance = (Math.random() - 0.5) * 100; // -50 to 50 vh
-            
-            particle.style.transition = `transform ${duration}ms linear, opacity ${duration}ms ease-in-out`;
-            particle.style.transform = `translate(${xDistance}vw, ${yDistance}vh)`;
-            particle.style.opacity = Math.random() * 0.5;
-            
-            // Reset particle after animation
-            setTimeout(() => {
-                particle.style.transition = 'none';
-                particle.style.transform = 'translate(0, 0)';
-                setTimeout(() => {
-                    animateParticle(particle);
-                }, 100);
-            }, duration);
-        }
-        
-        // Initialize car rotation
-        function initCarRotation(modelId, leftBtnId, rightBtnId) {
-            const carModel = document.getElementById(modelId);
-            let currentRotation = 0;
-            
-            document.getElementById(leftBtnId).addEventListener('click', function() {
-                currentRotation -= 90;
-                carModel.style.transform = `rotateY(${currentRotation}deg)`;
-            });
-            
-            document.getElementById(rightBtnId).addEventListener('click', function() {
-                currentRotation += 90;
-                carModel.style.transform = `rotateY(${currentRotation}deg)`;
-            });
-        }
-        
-        // Initialize gallery auto-scroll
-        function initGallery() {
-            const galleryTrack = document.getElementById('galleryTrack');
-            const galleryItems = galleryTrack.querySelectorAll('.gallery-item');
-            const itemWidth = galleryItems[0].offsetWidth + 30; // Width + margin
-            let position = 0;
-            
-            // Clone items for infinite scroll
-            galleryItems.forEach(item => {
-                const clone = item.cloneNode(true);
-                galleryTrack.appendChild(clone);
-            });
-            
-            // Set initial width
-            galleryTrack.style.width = `${itemWidth * galleryItems.length * 2}px`;
-            
-            // Auto scroll
-            setInterval(() => {
-                position -= 1;
-                if (Math.abs(position) >= itemWidth * galleryItems.length) {
-                    position = 0;
-                }
-                galleryTrack.style.transform = `translateX(${position}px)`;
-            }, 30);
-        }
-        
-        // Initialize tech specs highlighting
-        function initTechSpecs() {
-            const specs = document.querySelectorAll('.tech-spec');
-            let currentIndex = 0;
-            
-            // Highlight first spec
-            specs[currentIndex].classList.add('active');
-            
-            // Change active spec every 10 seconds
-            setInterval(() => {
-                specs[currentIndex].classList.remove('active');
-                currentIndex = (currentIndex + 1) % specs.length;
-                specs[currentIndex].classList.add('active');
-            }, 10000);
-        }
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97cda32a36364bb2',t:'MTc1NzQ5MzgwMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
-</html>
+        document.getElementById(rightBtnId)?.addEventListener('click', function() {
+          currentRotation += 90;
+          carModel.style.transform = `rotateY(${currentRotation}deg)`;
+        });
+      }
+      
+      initCarRotation('carModel', 'rotateLeft', 'rotateRight');
+      initCarRotation('techCarModel', 'techRotateLeft', 'techRotateRight');
+      
+      // Initialize language system
+      updateLanguage();
+      
+      // Tech details button
+      document.getElementById('techDetailsBtn')?.addEventListener('click', function() {
+        document.getElementById('tech')?.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+</Layout>
