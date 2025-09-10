@@ -131,6 +131,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            perspective: 1500px;
         }
         
         .car-face {
@@ -284,6 +285,53 @@
         .page-content.hidden {
             display: none;
         }
+
+        /* Folding Animation Styles */
+        .flipper {
+            transform-style: preserve-3d;
+            width: 100%;
+            max-width: 640px; /* Corresponds to max-w-lg */
+            height: 100%;
+            position: relative;
+        }
+        .half {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+        }
+        .left-half {
+            left: 0;
+            transform-origin: right center;
+        }
+        .right-half {
+            right: 0;
+            transform-origin: left center;
+        }
+        .face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            background-size: 200% 100%;
+            background-repeat: no-repeat;
+        }
+        .left-half .face {
+            background-position: left center;
+        }
+        .right-half .face {
+            background-position: right center;
+        }
+        .face.back {
+            transform: rotateY(180deg);
+        }
+        .left-half.flipped {
+            transform: rotateY(180deg);
+        }
+        .right-half.flipped {
+            transform: rotateY(-180deg);
+        }
     </style>
 </head>
 <body>
@@ -385,7 +433,7 @@
             </h2>
             <div class="car-model-container">
                 <div class="car-model" id="carModel">
-                    <img id="carImageView" src="1.png" alt="ASIMOV Nexus Car" class="w-full max-w-lg transition-opacity duration-500 ease-in-out">
+                    <!-- This will be populated by initCarRotation -->
                 </div>
             </div>
             <div class="rotate-controls">
@@ -408,30 +456,14 @@
         <div class="w-full max-w-5xl mx-auto mt-16 fade-in delay-400">
             <div class="gallery">
                 <div class="gallery-track" id="galleryTrack">
-                    <div class="gallery-item glassmorphism">
-                        <img src="1.png" alt="ASIMOV Car View 1" class="w-full h-full object-cover">
-                    </div>
-                    <div class="gallery-item glassmorphism">
-                        <img src="2.png" alt="ASIMOV Car View 2" class="w-full h-full object-cover">
-                    </div>
-                    <div class="gallery-item glassmorphism">
-                        <img src="3.png" alt="ASIMOV Car View 3" class="w-full h-full object-cover">
-                    </div>
-                    <div class="gallery-item glassmorphism">
-                        <img src="4.png" alt="ASIMOV Car View 4" class="w-full h-full object-cover">
-                    </div>
-                    <div class="gallery-item glassmorphism">
-                        <img src="5.png" alt="ASIMOV Car View 5" class="w-full h-full object-cover">
-                    </div>
-                    <div class="gallery-item glassmorphism">
-                        <img src="6.png" alt="ASIMOV Car View 6" class="w-full h-full object-cover">
-                    </div>
-                    <div class="gallery-item glassmorphism">
-                        <img src="7.png" alt="ASIMOV Car View 7" class="w-full h-full object-cover">
-                    </div>
-                    <div class="gallery-item glassmorphism">
-                        <img src="8.png" alt="ASIMOV Car View 8" class="w-full h-full object-cover">
-                    </div>
+                    <div class="gallery-item glassmorphism"><img src="1.png" alt="ASIMOV Car View 1" class="w-full h-full object-cover"></div>
+                    <div class="gallery-item glassmorphism"><img src="2.png" alt="ASIMOV Car View 2" class="w-full h-full object-cover"></div>
+                    <div class="gallery-item glassmorphism"><img src="3.png" alt="ASIMOV Car View 3" class="w-full h-full object-cover"></div>
+                    <div class="gallery-item glassmorphism"><img src="4.png" alt="ASIMOV Car View 4" class="w-full h-full object-cover"></div>
+                    <div class="gallery-item glassmorphism"><img src="5.png" alt="ASIMOV Car View 5" class="w-full h-full object-cover"></div>
+                    <div class="gallery-item glassmorphism"><img src="6.png" alt="ASIMOV Car View 6" class="w-full h-full object-cover"></div>
+                    <div class="gallery-item glassmorphism"><img src="7.png" alt="ASIMOV Car View 7" class="w-full h-full object-cover"></div>
+                    <div class="gallery-item glassmorphism"><img src="8.png" alt="ASIMOV Car View 8" class="w-full h-full object-cover"></div>
                 </div>
             </div>
         </div>
@@ -456,7 +488,7 @@
                 <div class="lg:w-1/2">
                     <div class="car-model-container">
                         <div class="car-model" id="techCarModel">
-                             <img id="techCarImageView" src="1.png" alt="ASIMOV Nexus Car Technical View" class="w-full max-w-lg transition-opacity duration-500 ease-in-out">
+                             <!-- This will be populated by initCarRotation -->
                         </div>
                     </div>
                     <div class="rotate-controls">
@@ -865,58 +897,118 @@
             const modelContainer = document.getElementById(modelId);
             if (!modelContainer) return;
 
-            const carImageView = modelContainer.querySelector('img');
-            if (!carImageView) return;
+            modelContainer.innerHTML = `
+                <div class="flipper">
+                    <div class="half left-half">
+                        <div class="face front"></div>
+                        <div class="face back"></div>
+                    </div>
+                    <div class="half right-half">
+                        <div class="face front"></div>
+                        <div class="face back"></div>
+                    </div>
+                </div>
+            `;
+
+            const leftHalf = modelContainer.querySelector('.left-half');
+            const rightHalf = modelContainer.querySelector('.right-half');
+            const frontLeft = modelContainer.querySelector('.left-half .front');
+            const backLeft = modelContainer.querySelector('.left-half .back');
+            const frontRight = modelContainer.querySelector('.right-half .front');
+            const backRight = modelContainer.querySelector('.right-half .back');
 
             const images = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png'];
             let currentIndex = 0;
+            let isAnimating = false;
 
-            const updateImage = () => {
-                // Fade out
-                carImageView.style.opacity = '0';
-                // Wait for fade out to complete (matches duration-500) then change image and fade in
-                setTimeout(() => {
-                    carImageView.src = images[currentIndex];
-                    carImageView.style.opacity = '1';
-                }, 500);
+            const setFaces = (index, faceType) => {
+                const imageUrl = `url(${images[index]})`;
+                if (faceType === 'front') {
+                    frontLeft.style.backgroundImage = imageUrl;
+                    frontRight.style.backgroundImage = imageUrl;
+                } else { // back
+                    backLeft.style.backgroundImage = imageUrl;
+                    backRight.style.backgroundImage = imageUrl;
+                }
             };
 
-            document.getElementById(leftBtnId).addEventListener('click', () => {
-                currentIndex = (currentIndex - 1 + images.length) % images.length;
-                updateImage();
-            });
-            
-            document.getElementById(rightBtnId).addEventListener('click', () => {
-                currentIndex = (currentIndex + 1) % images.length;
-                updateImage();
-            });
+            // Initial setup
+            setFaces(currentIndex, 'front');
+
+            const performFlip = (direction) => {
+                if (isAnimating) return;
+                isAnimating = true;
+
+                const nextIndex = (currentIndex + direction + images.length) % images.length;
+                
+                // Set the back faces to the next image
+                setFaces(nextIndex, 'back');
+
+                // Add class to trigger animation
+                leftHalf.classList.add('flipped');
+                rightHalf.classList.add('flipped');
+
+                setTimeout(() => {
+                    // After animation, the back becomes the new front
+                    currentIndex = nextIndex;
+                    setFaces(currentIndex, 'front');
+
+                    // Reset transform without animation for the next flip
+                    leftHalf.style.transition = 'none';
+                    rightHalf.style.transition = 'none';
+                    
+                    // Force reflow before removing class
+                    void leftHalf.offsetWidth; 
+
+                    leftHalf.classList.remove('flipped');
+                    rightHalf.classList.remove('flipped');
+                    
+                    // Force reflow again
+                    void leftHalf.offsetWidth; 
+
+                    // Re-enable transition after a tick
+                    setTimeout(() => {
+                        leftHalf.style.transition = '';
+                        rightHalf.style.transition = '';
+                        isAnimating = false;
+                    }, 50);
+
+                }, 800); // Must match CSS transition duration
+            };
+
+            document.getElementById(leftBtnId).addEventListener('click', () => performFlip(-1));
+            document.getElementById(rightBtnId).addEventListener('click', () => performFlip(1));
         }
+
         
         // Initialize gallery auto-scroll
         function initGallery() {
             const galleryTrack = document.getElementById('galleryTrack');
             const galleryItems = galleryTrack.querySelectorAll('.gallery-item');
             if (galleryItems.length === 0) return;
-            const itemWidth = galleryItems[0].offsetWidth + 30; // Width + margin
-            let position = 0;
-            
-            // Clone items for infinite scroll
-            galleryItems.forEach(item => {
-                const clone = item.cloneNode(true);
-                galleryTrack.appendChild(clone);
-            });
-            
-            // Set initial width
-            galleryTrack.style.width = `${itemWidth * galleryItems.length * 2}px`;
-            
-            // Auto scroll
-            setInterval(() => {
-                position -= 1;
-                if (Math.abs(position) >= itemWidth * galleryItems.length) {
-                    position = 0;
-                }
-                galleryTrack.style.transform = `translateX(${position}px)`;
-            }, 30);
+            // Recalculate width as it might not be available right away
+            setTimeout(() => {
+                const itemWidth = galleryItems[0].offsetWidth + 30; // Width + margin
+                let position = 0;
+                
+                // Clone items for infinite scroll
+                galleryItems.forEach(item => {
+                    const clone = item.cloneNode(true);
+                    galleryTrack.appendChild(clone);
+                });
+                
+                // Set initial width
+                galleryTrack.style.width = `${itemWidth * galleryItems.length * 2}px`;
+                
+                // Auto scroll
+                setInterval(() => {
+                    position -= 1;
+                    if (Math.abs(position) >= itemWidth * galleryItems.length) {
+                        position = 0;
+                    }
+                    galleryTrack.style.transform = `translateX(${position}px)`;
+                }, 30);
+            }, 500);
         }
         
         // Initialize tech specs highlighting
