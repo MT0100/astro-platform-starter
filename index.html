@@ -134,16 +134,6 @@
             perspective: 1500px;
         }
         
-        .car-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            backface-visibility: hidden;
-        }
-        
         .gallery {
             width: 100%;
             overflow: hidden;
@@ -286,51 +276,26 @@
             display: none;
         }
 
-        /* Folding Animation Styles */
+        /* Flip Animation Styles */
         .flipper {
             transform-style: preserve-3d;
             width: 100%;
-            max-width: 640px; /* Corresponds to max-w-lg */
+            max-width: 640px;
             height: 100%;
             position: relative;
+            transition: transform 0.8s cubic-bezier(0.42, 0, 0.58, 1);
         }
-        .half {
-            position: absolute;
-            width: 50%;
-            height: 100%;
-            transform-style: preserve-3d;
-            transition: transform 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045);
-        }
-        .left-half {
-            left: 0;
-            transform-origin: right center;
-        }
-        .right-half {
-            right: 0;
-            transform-origin: left center;
-        }
-        .face {
+        .flipper .face {
             position: absolute;
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            background-size: 200% 100%;
+            background-size: contain;
+            background-position: center center;
             background-repeat: no-repeat;
         }
-        .left-half .face {
-            background-position: left center;
-        }
-        .right-half .face {
-            background-position: right center;
-        }
-        .face.back {
+        .flipper .back {
             transform: rotateY(180deg);
-        }
-        .left-half.flipped {
-            transform: rotateY(180deg);
-        }
-        .right-half.flipped {
-            transform: rotateY(-180deg);
         }
     </style>
 </head>
@@ -899,41 +864,25 @@
 
             modelContainer.innerHTML = `
                 <div class="flipper">
-                    <div class="half left-half">
-                        <div class="face front"></div>
-                        <div class="face back"></div>
-                    </div>
-                    <div class="half right-half">
-                        <div class="face front"></div>
-                        <div class="face back"></div>
-                    </div>
+                    <div class="face front"></div>
+                    <div class="face back"></div>
                 </div>
             `;
 
-            const leftHalf = modelContainer.querySelector('.left-half');
-            const rightHalf = modelContainer.querySelector('.right-half');
-            const frontLeft = modelContainer.querySelector('.left-half .front');
-            const backLeft = modelContainer.querySelector('.left-half .back');
-            const frontRight = modelContainer.querySelector('.right-half .front');
-            const backRight = modelContainer.querySelector('.right-half .back');
+            const flipper = modelContainer.querySelector('.flipper');
+            const frontFace = modelContainer.querySelector('.front');
+            const backFace = modelContainer.querySelector('.back');
 
             const images = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png'];
             let currentIndex = 0;
             let isAnimating = false;
 
-            const setFaces = (index, faceType) => {
-                const imageUrl = `url(${images[index]})`;
-                if (faceType === 'front') {
-                    frontLeft.style.backgroundImage = imageUrl;
-                    frontRight.style.backgroundImage = imageUrl;
-                } else { // back
-                    backLeft.style.backgroundImage = imageUrl;
-                    backRight.style.backgroundImage = imageUrl;
-                }
+            const setFaceImage = (face, index) => {
+                face.style.backgroundImage = `url(${images[index]})`;
             };
 
             // Initial setup
-            setFaces(currentIndex, 'front');
+            setFaceImage(frontFace, currentIndex);
 
             const performFlip = (direction) => {
                 if (isAnimating) return;
@@ -941,66 +890,49 @@
 
                 const nextIndex = (currentIndex + direction + images.length) % images.length;
                 
-                // Set the back faces to the next image
-                setFaces(nextIndex, 'back');
-
-                // Add class to trigger animation
-                leftHalf.classList.add('flipped');
-                rightHalf.classList.add('flipped');
+                setFaceImage(backFace, nextIndex);
+                
+                const rotation = direction === 1 ? -180 : 180;
+                
+                flipper.style.transform = `rotateY(${rotation}deg)`;
 
                 setTimeout(() => {
-                    // After animation, the back becomes the new front
                     currentIndex = nextIndex;
-                    setFaces(currentIndex, 'front');
-
-                    // Reset transform without animation for the next flip
-                    leftHalf.style.transition = 'none';
-                    rightHalf.style.transition = 'none';
+                    setFaceImage(frontFace, currentIndex);
                     
-                    // Force reflow before removing class
-                    void leftHalf.offsetWidth; 
-
-                    leftHalf.classList.remove('flipped');
-                    rightHalf.classList.remove('flipped');
+                    flipper.style.transition = 'none';
+                    flipper.style.transform = 'rotateY(0deg)';
                     
-                    // Force reflow again
-                    void leftHalf.offsetWidth; 
+                    void flipper.offsetWidth; 
 
-                    // Re-enable transition after a tick
-                    setTimeout(() => {
-                        leftHalf.style.transition = '';
-                        rightHalf.style.transition = '';
-                        isAnimating = false;
-                    }, 50);
+                    flipper.style.transition = 'transform 0.8s cubic-bezier(0.42, 0, 0.58, 1)';
+                    
+                    isAnimating = false;
 
-                }, 800); // Must match CSS transition duration
+                }, 800);
             };
 
             document.getElementById(leftBtnId).addEventListener('click', () => performFlip(-1));
             document.getElementById(rightBtnId).addEventListener('click', () => performFlip(1));
         }
-
         
         // Initialize gallery auto-scroll
         function initGallery() {
             const galleryTrack = document.getElementById('galleryTrack');
             const galleryItems = galleryTrack.querySelectorAll('.gallery-item');
             if (galleryItems.length === 0) return;
-            // Recalculate width as it might not be available right away
+            
             setTimeout(() => {
-                const itemWidth = galleryItems[0].offsetWidth + 30; // Width + margin
+                const itemWidth = galleryItems[0].offsetWidth + 30; 
                 let position = 0;
                 
-                // Clone items for infinite scroll
                 galleryItems.forEach(item => {
                     const clone = item.cloneNode(true);
                     galleryTrack.appendChild(clone);
                 });
                 
-                // Set initial width
                 galleryTrack.style.width = `${itemWidth * galleryItems.length * 2}px`;
                 
-                // Auto scroll
                 setInterval(() => {
                     position -= 1;
                     if (Math.abs(position) >= itemWidth * galleryItems.length) {
@@ -1017,10 +949,8 @@
             if (specs.length === 0) return;
             let currentIndex = 0;
             
-            // Highlight first spec
             specs[currentIndex].classList.add('active');
             
-            // Change active spec every 10 seconds
             setInterval(() => {
                 specs[currentIndex].classList.remove('active');
                 currentIndex = (currentIndex + 1) % specs.length;
