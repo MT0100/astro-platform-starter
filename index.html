@@ -128,6 +128,9 @@
             position: relative;
             transform-style: preserve-3d;
             transition: transform 0.5s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
         .car-face {
@@ -359,10 +362,8 @@
     <!-- Hero Section -->
     <section class="min-h-screen pt-24 pb-20 px-6 flex flex-col justify-center items-center relative">
         <div class="container mx-auto text-center">
-            <h1 class="orbitron text-4xl md:text-6xl font-bold mb-6 fade-in">
-                <span class="text-white">THE FUTURE OF </span>
-                <span class="red-glow text-red-500" data-text="heroTitle1">AUTONOMOUS</span>
-                <span class="text-white" data-text="heroTitle2"> DRIVING</span>
+            <h1 class="orbitron text-4xl md:text-6xl font-bold mb-6 fade-in" data-text="heroFullTitle">
+                <!-- This content is now populated by JavaScript -->
             </h1>
             <p class="text-xl md:text-2xl mb-12 max-w-3xl mx-auto text-gray-300 fade-in delay-100" data-text="heroSubtitle">
                 Experience the revolution in self-driving technology with ASIMOV's cutting-edge AI systems and unparalleled safety features.
@@ -384,61 +385,7 @@
             </h2>
             <div class="car-model-container">
                 <div class="car-model" id="carModel">
-                    <div class="car-face" style="transform: rotateY(0deg)">
-                        <svg class="w-full max-w-lg" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Front view of futuristic car -->
-                            <path d="M150 300 L650 300 L600 200 L200 200 Z" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
-                            <path d="M200 200 L600 200 L550 150 L250 150 Z" fill="#16213e" stroke="#00ffff" stroke-width="2"/>
-                            <rect x="250" y="170" width="300" height="20" fill="#00ffff" opacity="0.3"/>
-                            <circle cx="250" cy="250" r="40" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="250" cy="250" r="30" fill="#1a1a2e" stroke="#ff1b1b" stroke-width="1"/>
-                            <circle cx="250" cy="250" r="15" fill="#ff1b1b" opacity="0.7"/>
-                            <circle cx="550" cy="250" r="40" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="550" cy="250" r="30" fill="#1a1a2e" stroke="#ff1b1b" stroke-width="1"/>
-                            <circle cx="550" cy="250" r="15" fill="#ff1b1b" opacity="0.7"/>
-                            <path d="M300 170 L500 170 L480 155 L320 155 Z" fill="#00ffff" opacity="0.5"/>
-                        </svg>
-                    </div>
-                    <div class="car-face" style="transform: rotateY(90deg)">
-                        <svg class="w-full max-w-lg" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Side view of futuristic car -->
-                            <path d="M100 300 L700 300 L650 250 L200 250 L150 280 Z" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
-                            <path d="M200 250 L650 250 L600 180 L250 180 Z" fill="#16213e" stroke="#00ffff" stroke-width="2"/>
-                            <path d="M250 180 L600 180 L580 150 L270 150 Z" fill="#0f0f0f" stroke="#00ffff" stroke-width="2"/>
-                            <rect x="300" y="200" width="250" height="30" fill="#00ffff" opacity="0.2"/>
-                            <circle cx="220" cy="300" r="30" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="220" cy="300" r="15" fill="#ff1b1b" opacity="0.7"/>
-                            <circle cx="580" cy="300" r="30" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="580" cy="300" r="15" fill="#ff1b1b" opacity="0.7"/>
-                        </svg>
-                    </div>
-                    <div class="car-face" style="transform: rotateY(180deg)">
-                        <svg class="w-full max-w-lg" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Rear view of futuristic car -->
-                            <path d="M150 300 L650 300 L600 200 L200 200 Z" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
-                            <path d="M200 200 L600 200 L550 150 L250 150 Z" fill="#16213e" stroke="#00ffff" stroke-width="2"/>
-                            <rect x="200" y="220" width="400" height="10" fill="#ff1b1b" opacity="0.7"/>
-                            <circle cx="250" cy="250" r="40" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="250" cy="250" r="30" fill="#1a1a2e" stroke="#ff1b1b" stroke-width="1"/>
-                            <circle cx="250" cy="250" r="15" fill="#ff1b1b" opacity="0.7"/>
-                            <circle cx="550" cy="250" r="40" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="550" cy="250" r="30" fill="#1a1a2e" stroke="#ff1b1b" stroke-width="1"/>
-                            <circle cx="550" cy="250" r="15" fill="#ff1b1b" opacity="0.7"/>
-                        </svg>
-                    </div>
-                    <div class="car-face" style="transform: rotateY(270deg)">
-                        <svg class="w-full max-w-lg" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Other side view of futuristic car -->
-                            <path d="M100 300 L700 300 L650 250 L200 250 L150 280 Z" fill="#1a1a2e" stroke="#00ffff" stroke-width="2"/>
-                            <path d="M200 250 L650 250 L600 180 L250 180 Z" fill="#16213e" stroke="#00ffff" stroke-width="2"/>
-                            <path d="M250 180 L600 180 L580 150 L270 150 Z" fill="#0f0f0f" stroke="#00ffff" stroke-width="2"/>
-                            <rect x="300" y="200" width="250" height="30" fill="#00ffff" opacity="0.2"/>
-                            <circle cx="220" cy="300" r="30" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="220" cy="300" r="15" fill="#ff1b1b" opacity="0.7"/>
-                            <circle cx="580" cy="300" r="30" fill="#0f0f0f" stroke="#ff1b1b" stroke-width="2"/>
-                            <circle cx="580" cy="300" r="15" fill="#ff1b1b" opacity="0.7"/>
-                        </svg>
-                    </div>
+                    <img id="carImageView" src="1.png" alt="ASIMOV Nexus Car" class="w-full max-w-lg transition-opacity duration-500 ease-in-out">
                 </div>
             </div>
             <div class="rotate-controls">
@@ -753,8 +700,7 @@
                 ec: 'EC',
                 
                 // Hero section
-                heroTitle1: 'OTONOM',
-                heroTitle2: 'SÜRÜŞÜN GELECEĞİ',
+                heroFullTitle: 'OTONOM SÜRÜŞÜN <span class="red-glow text-red-500">GELECEĞİ</span>',
                 heroSubtitle: 'ASIMOV\'un son teknoloji yapay zeka sistemleri ve benzersiz güvenlik özellikleri ile otonom sürüş devrimini deneyimleyin.',
                 reserveNow: 'ŞİMDİ REZERVE ET',
                 learnMore: 'DAHA FAZLA BİLGİ',
@@ -803,8 +749,7 @@
                 ec: 'EC',
                 
                 // Hero section
-                heroTitle1: 'AUTONOMOUS',
-                heroTitle2: 'DRIVING',
+                heroFullTitle: 'THE FUTURE OF <span class="red-glow text-red-500">AUTONOMOUS</span> DRIVING',
                 heroSubtitle: 'Experience the revolution in self-driving technology with ASIMOV\'s cutting-edge AI systems and unparalleled safety features.',
                 reserveNow: 'RESERVE NOW',
                 learnMore: 'LEARN MORE',
@@ -857,8 +802,7 @@
             document.querySelector('[data-nav="ec"]').textContent = t.ec;
             
             // Update hero section
-            document.querySelector('[data-text="heroTitle1"]').textContent = t.heroTitle1;
-            document.querySelector('[data-text="heroTitle2"]').textContent = t.heroTitle2;
+            document.querySelector('[data-text="heroFullTitle"]').innerHTML = t.heroFullTitle;
             document.querySelector('[data-text="heroSubtitle"]').textContent = t.heroSubtitle;
             document.querySelector('[data-text="reserveNow"]').textContent = t.reserveNow;
             document.querySelector('[data-text="learnMore"]').textContent = t.learnMore;
@@ -1013,24 +957,55 @@
         
         // Initialize car rotation
         function initCarRotation(modelId, leftBtnId, rightBtnId) {
-            const carModel = document.getElementById(modelId);
-            let currentRotation = 0;
-            
-            document.getElementById(leftBtnId).addEventListener('click', function() {
-                currentRotation -= 90;
-                carModel.style.transform = `rotateY(${currentRotation}deg)`;
-            });
-            
-            document.getElementById(rightBtnId).addEventListener('click', function() {
-                currentRotation += 90;
-                carModel.style.transform = `rotateY(${currentRotation}deg)`;
-            });
+            if (modelId === 'carModel') {
+                const carImageView = document.getElementById('carImageView');
+                if (!carImageView) return;
+
+                const images = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png'];
+                let currentIndex = 0;
+
+                const updateImage = () => {
+                    // Fade out
+                    carImageView.style.opacity = '0';
+                    setTimeout(() => {
+                        carImageView.src = images[currentIndex];
+                        // Fade in
+                        carImageView.style.opacity = '1';
+                    }, 250);
+                };
+
+                document.getElementById(leftBtnId).addEventListener('click', function() {
+                    currentIndex = (currentIndex - 1 + images.length) % images.length;
+                    updateImage();
+                });
+                
+                document.getElementById(rightBtnId).addEventListener('click', function() {
+                    currentIndex = (currentIndex + 1) % images.length;
+                    updateImage();
+                });
+
+            } else {
+                // Original logic for 'techCarModel'
+                const carModel = document.getElementById(modelId);
+                let currentRotation = 0;
+                
+                document.getElementById(leftBtnId).addEventListener('click', function() {
+                    currentRotation -= 90;
+                    carModel.style.transform = `rotateY(${currentRotation}deg)`;
+                });
+                
+                document.getElementById(rightBtnId).addEventListener('click', function() {
+                    currentRotation += 90;
+                    carModel.style.transform = `rotateY(${currentRotation}deg)`;
+                });
+            }
         }
         
         // Initialize gallery auto-scroll
         function initGallery() {
             const galleryTrack = document.getElementById('galleryTrack');
             const galleryItems = galleryTrack.querySelectorAll('.gallery-item');
+            if (galleryItems.length === 0) return;
             const itemWidth = galleryItems[0].offsetWidth + 30; // Width + margin
             let position = 0;
             
@@ -1056,6 +1031,7 @@
         // Initialize tech specs highlighting
         function initTechSpecs() {
             const specs = document.querySelectorAll('.tech-spec');
+            if (specs.length === 0) return;
             let currentIndex = 0;
             
             // Highlight first spec
@@ -1071,3 +1047,4 @@
     </script>
 </body>
 </html>
+
