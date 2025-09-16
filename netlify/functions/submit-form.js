@@ -1,6 +1,6 @@
 const { google } = require("googleapis");
 
-exports.handler = async (event, context) => {
+exports.handler = async (event) => {
   try {
     if (event.httpMethod !== "POST") {
       return { statusCode: 405, body: "Method Not Allowed" };
@@ -9,10 +9,15 @@ exports.handler = async (event, context) => {
     const body = JSON.parse(event.body);
     const { name, email, message } = body;
 
-    // Environment variable’dan service account JSON’unu al
     const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
 
-    // Auth
+    const spreadsheetId = process.env.SPREADSHEET_ID;
+
+    if (!credentials || !spreadsheetId) {
+        console.error("Ortam değişkenleri (Environment variables) doğru ayarlanmamış.");
+        return { statusCode: 500, body: "Sunucu yapılandırma hatası." };
+    }
+
     const auth = new google.auth.GoogleAuth({
       credentials,
       scopes: ["https://www.googleapis.com/auth/spreadsheets"],
@@ -20,16 +25,16 @@ exports.handler = async (event, context) => {
 
     const sheets = google.sheets({ version: "v4", auth });
 
-    // Buraya kendi spreadsheet ID’ni koy
-    const spreadsheetId = "SPREADSHEET_ID_HERE";
-    const range = "Sayfa1!A:C"; // ilk 3 sütun: Name, Email, Message
+    // Verileri "Sayfa1" adlı sayfanın sonuna ekler. 
+    // Sütunlar: A=Tarih, B=Ad Soyad, C=E-posta, D=Mesaj
+    const range = "Sayfa1"; 
 
     await sheets.spreadsheets.values.append({
       spreadsheetId,
       range,
       valueInputOption: "RAW",
       requestBody: {
-        values: [[name, email, message, new Date().toISOString()]],
+        values: [[new Date().toISOString(), name, email, message]],
       },
     });
 
@@ -38,7 +43,11 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({ success: true }),
     };
   } catch (error) {
-    console.error(error);
-    return { statusCode: 500, body: "Internal Server Error" };
+    console.error("Netlify fonksiyonunda hata:", error);
+    return { 
+        statusCode: 500, 
+        body: `İç Sunucu Hatası: ${error.message}` 
+    };
   }
 };
+
