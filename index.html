@@ -8,6 +8,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        .loading-dots span {
+        opacity: 0;
+        animation: blink 1.5s infinite;
+        }
+        .loading-dots span:nth-child(1) { animation-delay: 0s; }
+        .loading-dots span:nth-child(2) { animation-delay: 0.3s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes blink {
+        0%, 20% { opacity: 0; }
+        30%, 70% { opacity: 1; }
+        80%, 100% { opacity: 0; }
+        }
+
+
+
         :root {
             --dark-bg: #0b0f1a;
             --neon-blue: #00ffff;
@@ -213,6 +229,9 @@
             border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .rotate-btn:hover {
@@ -324,7 +343,7 @@
         <div class="container mx-auto flex justify-center items-center">
             <div class="flex items-center">
                 <!-- ASIMOV Logo -->
-                <img src="image_fc2292.png" alt="ASIMOV Logo" class="w-10 h-10 mr-3">
+                <img src="https://img.icons8.com/nolan/64/artificial-intelligence.png" alt="ASIMOV Logo" class="w-10 h-10 mr-3">
                 <h1 class="orbitron text-2xl font-bold text-white">
                     <span class="neon-blue-glow">ASIMOV</span>
                 </h1>
@@ -379,7 +398,7 @@
                 <!-- This content is now populated by JavaScript -->
             </h1>
             <p class="text-xl md:text-2xl mb-12 max-w-3xl mx-auto text-gray-300 fade-in delay-100" data-text="heroSubtitle">
-                Experience the revolution in self-driving technology with ASIMOV's cutting-edge AI systems and unparalleled safety features.
+                <!-- This content is now populated by JavaScript -->
             </p>
         </div>
         
@@ -398,10 +417,10 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L9.414 11H13a1 1 0 100-2H9.414l1.293-1.293z" clip-rule="evenodd" />
                     </svg>
-                    ROTATE LEFT
+                    <span data-text="rotateLeft"></span>
                 </button>
                 <button class="rotate-btn" id="rotateRight">
-                    ROTATE RIGHT
+                    <span data-text="rotateRight"></span>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.293 7.707a1 1 0 011.414-1.414l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L10.586 11H7a1 1 0 110-2h3.586l-1.293-1.293z" clip-rule="evenodd" />
                     </svg>
@@ -413,14 +432,15 @@
         <div class="w-full max-w-5xl mx-auto mt-16 fade-in delay-400">
             <div class="gallery">
                 <div class="gallery-track" id="galleryTrack">
-                    <div class="gallery-item glassmorphism"><img src="1.png" alt="ASIMOV Car View 1" class="w-full h-full object-cover"></div>
-                    <div class="gallery-item glassmorphism"><img src="2.png" alt="ASIMOV Car View 2" class="w-full h-full object-cover"></div>
-                    <div class="gallery-item glassmorphism"><img src="3.png" alt="ASIMOV Car View 3" class="w-full h-full object-cover"></div>
-                    <div class="gallery-item glassmorphism"><img src="4.png" alt="ASIMOV Car View 4" class="w-full h-full object-cover"></div>
-                    <div class="gallery-item glassmorphism"><img src="5.png" alt="ASIMOV Car View 5" class="w-full h-full object-cover"></div>
-                    <div class="gallery-item glassmorphism"><img src="6.png" alt="ASIMOV Car View 6" class="w-full h-full object-cover"></div>
-                    <div class="gallery-item glassmorphism"><img src="7.png" alt="ASIMOV Car View 7" class="w-full h-full object-cover"></div>
-                    <div class="gallery-item glassmorphism"><img src="8.png" alt="ASIMOV Car View 8" class="w-full h-full object-cover"></div>
+                    <!-- Images are placeholders. Replace with your actual image paths -->
+                    <div class="gallery-item glassmorphism"><img src="https://placehold.co/300x200/0b0f1a/00ffff?text=View+1" alt="ASIMOV Car View 1" class="w-full h-full object-cover"></div>
+                    <div class="gallery-item glassmorphism"><img src="https://placehold.co/300x200/0b0f1a/00ffff?text=View+2" alt="ASIMOV Car View 2" class="w-full h-full object-cover"></div>
+                    <div class="gallery-item glassmorphism"><img src="https://placehold.co/300x200/0b0f1a/00ffff?text=View+3" alt="ASIMOV Car View 3" class="w-full h-full object-cover"></div>
+                    <div class="gallery-item glassmorphism"><img src="https://placehold.co/300x200/0b0f1a/00ffff?text=View+4" alt="ASIMOV Car View 4" class="w-full h-full object-cover"></div>
+                    <div class="gallery-item glassmorphism"><img src="https://placehold.co/300x200/0b0f1a/00ffff?text=View+5" alt="ASIMOV Car View 5" class="w-full h-full object-cover"></div>
+                    <div class="gallery-item glassmorphism"><img src="https://placehold.co/300x200/0b0f1a/00ffff?text=View+6" alt="ASIMOV Car View 6" class="w-full h-full object-cover"></div>
+                    <div class="gallery-item glassmorphism"><img src="https://placehold.co/300x200/0b0f1a/00ffff?text=View+7" alt="ASIMOV Car View 7" class="w-full h-full object-cover"></div>
+                    <div class="gallery-item glassmorphism"><img src="https://placehold.co/300x200/0b0f1a/00ffff?text=View+8" alt="ASIMOV Car View 8" class="w-full h-full object-cover"></div>
                 </div>
             </div>
         </div>
@@ -431,7 +451,7 @@
     <section id="tech" class="min-h-screen py-20 pb-24 px-6">
         <div class="container mx-auto">
             <h2 class="orbitron text-4xl font-bold mb-16 text-center">
-                <span class="red-glow" data-text="techTitle1">TECHNICAL</span> <span class="neon-blue-glow" data-text="techTitle2">SPECIFICATIONS</span>
+                <span class="red-glow" data-text="techTitle1"></span> <span class="neon-blue-glow" data-text="techTitle2"></span>
             </h2>
             
             <div class="flex flex-col lg:flex-row gap-12">
@@ -447,10 +467,10 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-10.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L9.414 11H13a1 1 0 100-2H9.414l1.293-1.293z" clip-rule="evenodd" />
                             </svg>
-                            ROTATE LEFT
+                            <span data-text="rotateLeft"></span>
                         </button>
                         <button class="rotate-btn" id="techRotateRight">
-                            ROTATE RIGHT
+                            <span data-text="rotateRight"></span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.293 7.707a1 1 0 011.414-1.414l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L10.586 11H7a1 1 0 110-2h3.586l-1.293-1.293z" clip-rule="evenodd" />
                             </svg>
@@ -463,28 +483,28 @@
                     <div class="glassmorphism p-8">
                         <ul class="space-y-6">
                             <li class="tech-spec p-4 glassmorphism" id="spec1">
-                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec1Title">AI Neural Network</h3>
-                                <p data-text="spec1Desc">Advanced 12-core quantum neural processor with 1.2 trillion parameters for real-time decision making and obstacle avoidance.</p>
+                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec1Title"></h3>
+                                <p data-text="spec1Desc"></p>
                             </li>
                             <li class="tech-spec p-4 glassmorphism" id="spec2">
-                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec2Title">Battery Range</h3>
-                                <p data-text="spec2Desc">Next-gen solid-state battery with 800km range on a single charge. Fast charging capability: 10-80% in just 15 minutes.</p>
+                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec2Title"></h3>
+                                <p data-text="spec2Desc"></p>
                             </li>
                             <li class="tech-spec p-4 glassmorphism" id="spec3">
-                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec3Title">Sensor Array</h3>
-                                <p data-text="spec3Desc">360° LiDAR system with 16 high-definition cameras and ultrasonic sensors providing complete environmental awareness up to 300 meters.</p>
+                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec3Title"></h3>
+                                <p data-text="spec3Desc"></p>
                             </li>
                             <li class="tech-spec p-4 glassmorphism" id="spec4">
-                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec4Title">Performance</h3>
-                                <p data-text="spec4Desc">Quad motor configuration delivering 1,200 horsepower. 0-100 km/h in 2.3 seconds with intelligent torque vectoring for optimal handling.</p>
+                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec4Title"></h3>
+                                <p data-text="spec4Desc"></p>
                             </li>
                             <li class="tech-spec p-4 glassmorphism" id="spec5">
-                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec5Title">Safety Systems</h3>
-                                <p data-text="spec5Desc">Predictive collision avoidance with 99.98% accuracy. Reinforced carbon-fiber frame with 12 airbags and emergency autonomous evasion protocols.</p>
+                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec5Title"></h3>
+                                <p data-text="spec5Desc"></p>
                             </li>
                             <li class="tech-spec p-4 glassmorphism" id="spec6">
-                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec6Title">Connectivity</h3>
-                                <p data-text="spec6Desc">Integrated 6G network capabilities with satellite uplink for continuous over-the-air updates and real-time traffic optimization.</p>
+                                <h3 class="orbitron text-xl font-bold mb-2" data-text="spec6Title"></h3>
+                                <p data-text="spec6Desc"></p>
                             </li>
                         </ul>
                     </div>
@@ -498,7 +518,7 @@
         <div class="container mx-auto">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="flex items-center mb-8 md:mb-0">
-                    <img src="image_fc2292.png" alt="ASIMOV Logo" class="w-10 h-10 mr-3">
+                    <img src="https://img.icons8.com/nolan/64/artificial-intelligence.png" alt="ASIMOV Logo" class="w-10 h-10 mr-3">
                     <h2 class="orbitron text-2xl font-bold text-white">
                         <span class="neon-blue-glow">ASIMOV</span>
                     </h2>
@@ -517,11 +537,11 @@
                 </div>
             </div>
             <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between">
-                <p class="text-gray-500 text-sm mb-4 md:mb-0" data-text="footerCopyright">© 2023 ASIMOV Autonomous Vehicles. All rights reserved.</p>
+                <p class="text-gray-500 text-sm mb-4 md:mb-0" data-text="footerCopyright"></p>
                 <div class="flex space-x-6">
-                    <a href="#" class="text-gray-500 text-sm hover:text-cyan-400 transition-colors" data-text="privacyPolicy">Privacy Policy</a>
-                    <a href="#" class="text-gray-500 text-sm hover:text-cyan-400 transition-colors" data-text="termsOfService">Terms of Service</a>
-                    <a href="#" class="text-gray-500 text-sm hover:text-cyan-400 transition-colors" data-text="contactFooter">Contact</a>
+                    <a href="#" class="text-gray-500 text-sm hover:text-cyan-400 transition-colors" data-text="privacyPolicy"></a>
+                    <a href="#" class="text-gray-500 text-sm hover:text-cyan-400 transition-colors" data-text="termsOfService"></a>
+                    <a href="#" class="text-gray-500 text-sm hover:text-cyan-400 transition-colors" data-text="contactFooter"></a>
                 </div>
             </div>
         </div>
@@ -533,7 +553,7 @@
         <section class="min-h-screen pt-24 pb-20 px-6 flex flex-col justify-center items-center">
             <div class="container mx-auto text-center">
                 <h1 class="orbitron text-4xl md:text-6xl font-bold mb-6">
-                    <span class="neon-blue-glow" data-text="aboutTitle">HAKKIMIZDA</span>
+                    <span class="neon-blue-glow" data-text="aboutTitle"></span>
                 </h1>
                 <div class="text-xl text-gray-300 max-w-3xl mx-auto text-left space-y-4" data-text="aboutContent">
                     <!-- This content is now populated by JavaScript -->
@@ -547,11 +567,38 @@
         <section class="min-h-screen pt-24 pb-20 px-6 flex flex-col justify-center items-center">
             <div class="container mx-auto text-center">
                 <h1 class="orbitron text-4xl md:text-6xl font-bold mb-6">
-                    <span class="neon-blue-glow" data-text="contactTitle">İLETİŞİM</span>
+                    <span class="neon-blue-glow" data-text="contactTitle"></span>
                 </h1>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto" data-text="contactContent">
-                    Bu sayfa henüz hazırlanmaktadır...
-                </p>
+                <div class="max-w-xl mx-auto">
+                    <form id="contactForm" class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-left text-cyan-400 orbitron mb-2" data-text="formName"></label>
+                            <input type="text" id="name" name="name" required class="w-full bg-gray-900/50 border border-cyan-700 rounded-lg p-3 focus:ring-2 focus:ring-red-500 focus:outline-none transition">
+                        </div>
+                         <div>
+                            <label for="email" class="block text-left text-cyan-400 orbitron mb-2" data-text="formEmail"></label>
+                            <input type="email" id="email" name="email" required class="w-full bg-gray-900/50 border border-cyan-700 rounded-lg p-3 focus:ring-2 focus:ring-red-500 focus:outline-none transition">
+                        </div>
+                         <div>
+                            <label for="message" class="block text-left text-cyan-400 orbitron mb-2" data-text="formMessage"></label>
+                            <textarea id="message" name="message" rows="5" required class="w-full bg-gray-900/50 border border-cyan-700 rounded-lg p-3 focus:ring-2 focus:ring-red-500 focus:outline-none transition"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-red-600 text-white px-8 py-3 rounded-full orbitron button-glow" data-text="formSubmit">
+                        </button>
+                    </form>
+                    <p id="successMessage" class="text-green-400 mt-4 hidden" data-text="formSuccess"></p>
+                    <!-- WhatsApp Group Link -->
+                    <div class="mt-8 flex justify-center">
+                    <a href="https://chat.whatsapp.com/CItapPAXrOFGyNSs5PpXfI?mode=ems_wa_t" target="_blank" rel="noopener noreferrer"
+                        class="flex items-center space-x-3 bg-green-600/20 border border-green-500 text-green-400 px-5 py-3 rounded-full hover:bg-green-600/30 hover:shadow-lg hover:shadow-green-500/40 transition">
+                        <!-- WhatsApp SVG Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.19 2 11.5c0 2.09.67 4.02 1.81 5.61L2 22l5.09-1.66A10.52 10.52 0 0012 21c5.52 0 10-4.19 10-9.5S17.52 2 12 2zm0 17c-1.65 0-3.2-.51-4.49-1.39l-.32-.22-3.02.98.99-2.87-.21-.33A7.64 7.64 0 014.5 11.5C4.5 7.36 8.15 4 12 4s7.5 3.36 7.5 7.5S15.85 19 12 19zm4.07-5.41c-.22-.11-1.3-.64-1.5-.71-.2-.07-.34-.11-.48.11-.14.22-.55.71-.68.86-.13.14-.25.16-.47.05-.22-.11-.94-.34-1.78-1.08-.66-.59-1.1-1.32-1.23-1.54-.13-.22-.01-.34.1-.45.1-.1.22-.25.33-.37.11-.13.14-.22.21-.36.07-.14.04-.27-.02-.38-.07-.11-.48-1.16-.66-1.59-.17-.42-.35-.36-.48-.37-.12-.01-.27-.01-.41-.01-.14 0-.38.05-.58.27-.2.22-.77.75-.77 1.82s.79 2.1.9 2.24c.11.14 1.55 2.36 3.77 3.31.53.23.94.37 1.26.48.53.17 1.01.15 1.39.09.43-.06 1.3-.53 1.48-1.04.18-.51.18-.95.12-1.04-.06-.09-.2-.14-.42-.25z"/>
+                        </svg>
+                        <span class="orbitron font-semibold" data-text="whatsappJoin"></span>
+                    </a>
+                    </div>
+                </div>
             </div>
         </section>
     </div>
@@ -560,15 +607,25 @@
     <div id="ec-page" class="page-content hidden">
         <section class="min-h-screen pt-24 pb-20 px-6 flex flex-col justify-center items-center">
             <div class="container mx-auto text-center">
-                <h1 class="orbitron text-4xl md:text-6xl font-bold mb-6">
-                    <span class="neon-blue-glow" data-text="ecTitle">EC</span>
+                <h1 class="orbitron text-4xl md:text-6xl font-bold mb-10">
+                    <span class="neon-blue-glow">EC</span>
                 </h1>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto" data-text="ecContent">
-                    Bu sayfa henüz hazırlanmaktadır...
-                </p>
+
+                <!-- Coming Soon Placeholder -->
+                <div class="w-full max-w-3xl mx-auto flex justify-center items-center mb-12">
+                    <div class="flex justify-center items-center w-full h-80 border-2 border-dashed border-cyan-500 rounded-xl bg-[#0a0f1a]">
+                        <span class="orbitron text-2xl neon-blue-glow loading-dots" data-text="ecLoading"><span>.</span><span>.</span><span>.</span></span>
+                    </div>
+                </div>
+
+                <!-- Info text -->
+                <div class="space-y-4" data-text="ecContent">
+                    <!-- This content is populated by JS -->
+                </div>
             </div>
         </section>
     </div>
+
 
     <script>
         // Language system
@@ -585,6 +642,8 @@
                 // Hero section
                 heroFullTitle: 'OTONOM SÜRÜŞÜN <span class="red-glow text-red-500">GELECEĞİ</span>',
                 heroSubtitle: 'ASIMOV\'un son teknoloji yapay zeka sistemleri ve benzersiz güvenlik özellikleri ile otonom sürüş devrimini deneyimleyin.',
+                rotateLeft: 'SOLA DÖNDÜR',
+                rotateRight: 'SAĞA DÖNDÜR',
                 
                 // Technical section
                 techTitle1: 'TEKNİK',
@@ -608,15 +667,36 @@
                 aboutTitle: 'HAKKIMIZDA',
                 aboutContent: '<p>Biz, İstanbul Kültür Üniversitesi’nde mühendislik temelli projeler geliştiriyor ve ulusal ile uluslararası arenada, özellikle TEKNOFEST yarışmalarında boy göstermeyi hedefleyen dinamik bir topluluk oluşturuyoruz.</p><p>Otonom sistemler, yazılım Ar-Ge, yapay zeka ve robotik gibi alanlarda çalışmalar yürütüyor; kendini geliştirmek isteyen meraklı öğrencileri bir araya getiriyoruz.</p><p>Kulübümüz, multidisipliner bir yapının parçası olarak, kurumsal iletişim ve medyatik ekiplerimizle bu vizyonu destekliyor.</p>',
                 contactTitle: 'İLETİŞİM',
-                contactContent: 'Bu sayfa henüz hazırlanmaktadır...',
+                formName: 'Ad Soyad',
+                formEmail: 'E-posta',
+                formMessage: 'Mesajınız',
+                formSubmit: 'GÖNDER',
+                formSuccess: 'Mesajınız başarıyla gönderildi!',
+                whatsappJoin: 'WhatsApp Grubumuza Katıl',
+
                 ecTitle: 'EC',
-                ecContent: 'Bu sayfa henüz hazırlanmaktadır...',
+                ecLoading: 'Yükleniyor',
+                ecContent: `<p>
+                    Teknofest <span class="red-glow">Efficiency Challenge</span>, en verimli elektrikli araçları
+                    tasarlamayı ve geliştirmeyi hedefleyen bir yarışmadır. Biz de ASIMOV ekibi olarak,
+                    mühendislik disiplinlerini bir araya getirerek geleceğin enerji dostu araçlarını
+                    üretme vizyonuyla çalışıyoruz.
+                </p>
+                <p>
+                    Projemiz, yüksek <span class="neon-blue-glow">enerji verimliliği</span>, aerodinamik
+                    tasarım, hafif ve dayanıklı malzemeler ile güçlü bir elektronik kontrol sistemi
+                    üzerine inşa edilmektedir.
+                </p>
+                <p>
+                    Araç görsellerimiz ve teknik detaylarımız çok yakında burada paylaşılacaktır.
+                    Takımımız, sürdürülebilir ulaşım için yenilikçi çözümler geliştirmeye kararlıdır.
+                </p>`,
                 
                 // Loading
                 loadingText: 'SİSTEMLER BAŞLATILIYOR',
                 
                 // Footer
-                footerCopyright: '© 2023 ASIMOV Otonom Araçlar. Tüm hakları saklıdır.',
+                footerCopyright: '© 2024 ASIMOV Otonom Araçlar. Tüm hakları saklıdır.',
                 privacyPolicy: 'Gizlilik Politikası',
                 termsOfService: 'Hizmet Şartları',
                 contactFooter: 'İletişim'
@@ -631,6 +711,8 @@
                 // Hero section
                 heroFullTitle: 'THE FUTURE OF <span class="red-glow text-red-500">AUTONOMOUS</span> DRIVING',
                 heroSubtitle: 'Experience the revolution in self-driving technology with ASIMOV\'s cutting-edge AI systems and unparalleled safety features.',
+                rotateLeft: 'ROTATE LEFT',
+                rotateRight: 'ROTATE RIGHT',
                 
                 // Technical section
                 techTitle1: 'TECHNICAL',
@@ -654,15 +736,30 @@
                 aboutTitle: 'ABOUT US',
                 aboutContent: '<p>We are a dynamic community at Istanbul Kültür University, developing engineering-based projects and aiming to compete in national and international arenas, especially at TEKNOFEST.</p><p>We work in fields such as autonomous systems, software R&D, artificial intelligence, and robotics, bringing together curious students who want to improve themselves.</p><p>As part of a multidisciplinary structure, our club supports this vision with our corporate communication and media teams.</p>',
                 contactTitle: 'CONTACT',
-                contactContent: 'This page is under construction...',
+                formName: 'Full Name',
+                formEmail: 'Email',
+                formMessage: 'Your Message',
+                formSubmit: 'SUBMIT',
+                formSuccess: 'Your message has been sent successfully!',
+                whatsappJoin: 'Join Our WhatsApp Group',
+
                 ecTitle: 'EC',
-                ecContent: 'This page is under construction...',
+                ecLoading: 'Loading',
+                ecContent: `<p>
+                    Teknofest <span class="red-glow">Efficiency Challenge</span> is a competition aimed at designing and developing the most efficient electric vehicles. As the ASIMOV team, we work with the vision of producing the energy-friendly vehicles of the future by bringing together engineering disciplines.
+                </p>
+                <p>
+                    Our project is built on high <span class="neon-blue-glow">energy efficiency</span>, aerodynamic design, lightweight and durable materials, and a powerful electronic control system.
+                </p>
+                <p>
+                    Our vehicle visuals and technical details will be shared here very soon. Our team is committed to developing innovative solutions for sustainable transportation.
+                </p>`,
                 
                 // Loading
                 loadingText: 'INITIALIZING SYSTEMS',
                 
                 // Footer
-                footerCopyright: '© 2023 ASIMOV Autonomous Vehicles. All rights reserved.',
+                footerCopyright: '© 2024 ASIMOV Autonomous Vehicles. All rights reserved.',
                 privacyPolicy: 'Privacy Policy',
                 termsOfService: 'Terms of Service',
                 contactFooter: 'Contact'
@@ -681,6 +778,8 @@
             // Update hero section
             document.querySelector('[data-text="heroFullTitle"]').innerHTML = t.heroFullTitle;
             document.querySelector('[data-text="heroSubtitle"]').textContent = t.heroSubtitle;
+            document.querySelectorAll('[data-text="rotateLeft"]').forEach(el => el.textContent = t.rotateLeft);
+            document.querySelectorAll('[data-text="rotateRight"]').forEach(el => el.textContent = t.rotateRight);
             
             // Update technical section
             document.querySelector('[data-text="techTitle1"]').textContent = t.techTitle1;
@@ -696,9 +795,16 @@
             document.querySelector('[data-text="aboutTitle"]').textContent = t.aboutTitle;
             document.querySelector('[data-text="aboutContent"]').innerHTML = t.aboutContent;
             document.querySelector('[data-text="contactTitle"]').textContent = t.contactTitle;
-            document.querySelector('[data-text="contactContent"]').textContent = t.contactContent;
-            document.querySelector('[data-text="ecTitle"]').textContent = t.ecTitle;
-            document.querySelector('[data-text="ecContent"]').textContent = t.ecContent;
+            document.querySelector('[data-text="ecLoading"]').innerHTML = t.ecLoading + `<span>.</span><span>.</span><span>.</span>`;
+            document.querySelector('[data-text="ecContent"]').innerHTML = t.ecContent;
+
+            // Update contact form
+            document.querySelector('[data-text="formName"]').textContent = t.formName;
+            document.querySelector('[data-text="formEmail"]').textContent = t.formEmail;
+            document.querySelector('[data-text="formMessage"]').textContent = t.formMessage;
+            document.querySelector('[data-text="formSubmit"]').textContent = t.formSubmit;
+            document.querySelector('[data-text="formSuccess"]').textContent = t.formSuccess;
+            document.querySelector('[data-text="whatsappJoin"]').textContent = t.whatsappJoin;
             
             // Update loading text
             document.querySelector('[data-text="loadingText"]').textContent = t.loadingText;
@@ -763,6 +869,9 @@
             
             // Initialize tech specs highlighting
             initTechSpecs();
+
+            // Contact Form Submission
+            document.getElementById('contactForm').addEventListener('submit', handleFormSubmit);
             
             // Initialize language system
             updateLanguage();
@@ -780,8 +889,29 @@
             const targetPage = document.getElementById(pageId + '-page');
             if (targetPage) {
                 targetPage.classList.remove('hidden');
+                window.scrollTo(0, 0); // Scroll to top of the page
             }
         }
+
+        // Contact form handler
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            // In a real application, you would send this data to a server.
+            // For this demo, we'll just show the success message.
+            console.log('Form submitted with:', {
+                name: form.name.value,
+                email: form.email.value,
+                message: form.message.value,
+            });
+            
+            document.getElementById("successMessage").classList.remove("hidden");
+            form.reset();
+            setTimeout(() => {
+                 document.getElementById("successMessage").classList.add("hidden");
+            }, 5000);
+        }
+
         
         // Create a single particle
         function createParticle() {
@@ -840,7 +970,13 @@
             const frontFace = modelContainer.querySelector('.front');
             const backFace = modelContainer.querySelector('.back');
 
-            const images = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png', '7.png', '8.png'];
+            // Using placeholders for rotation images.
+            const images = [
+                'https://placehold.co/640x400/0b0f1a/ff1b1b?text=NEXUS+Front', 
+                'https://placehold.co/640x400/0b0f1a/ff1b1b?text=NEXUS+Side', 
+                'https://placehold.co/640x400/0b0f1a/ff1b1b?text=NEXUS+Back', 
+                'https://placehold.co/640x400/0b0f1a/ff1b1b?text=NEXUS+Other+Side'
+            ];
             let currentIndex = 0;
             let isAnimating = false;
 
@@ -927,5 +1063,3 @@
     </script>
 </body>
 </html>
-
-
